@@ -1,0 +1,7 @@
+{% if agents %}
+    {% for agent in agents %}
+    <div>
+        <p onclick="selectAgent( '{{ agent.id }}', '{{ agent.agent_name }}')"> {{ agent.agent_name }}</p>
+    </div>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,136 @@
+{% extends 'system\base.html' %}
+
+{% block title %}Agent{% endblock %}
+
+{% block centre %}
+
+    <div>
+        <h2 class="form_title">Agent</h2>
+
+        {% if error_message %}<p class="errorlist">{{ error_message }}</p>{% endif %}
+
+        <div class="message">
+            {% for message in messages %}
+                    <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+
+        {% if agent %}
+            <p class="padding">{{ agent.agent_name }}</p>
+        {% else %}
+            <form action="{% url 'system:add_agent' %}" method="post">
+                {% csrf_token %}
+
+                <div class="form_container">
+
+                    <div id="create_left" class="form_left inputs">
+
+                        <div id="" class="field_flex_con">
+                            <div class="field_left">{{ agent_form.agent_code.label_tag }}</div>
+                            <div class="field_right">
+                                {{ agent_form.agent_code.errors }}
+                                {{ agent_form.agent_code }}
+                            </div>
+                        </div>
+
+                        <div id="" class="field_flex_con">
+                            <div class="field_left">{{ agent_form.agent_name.label_tag }}</div>
+                            <div class="field_right">
+                                {{ agent_form.agent_name.errors }}
+                                {{ agent_form.agent_name }}
+                            </div>
+                        </div>
+
+                        <div id="" class="field_flex_con">
+                            <div class="field_left">{{ agent_form.agent_branch.label_tag }}</div>
+                            <div class="field_right">
+                                {{ agent_form.agent_branch.errors }}
+                                {{ agent_form.agent_branch }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form_right inputs">
+
+                        <div id="" class="field_flex_con">
+                            <div class="field_left">{{ agent_form.agent_email.label_tag }}</div>
+                            <div class="field_right">
+                                {{ agent_form.agent_email.errors }}
+                                {{ agent_form.agent_email }}
+                            </div>
+                        </div>
+
+                        <div id="" class="field_flex_con">
+                            <div class="field_left">{{ agent_form.agent_phone.label_tag }}</div>
+                            <div class="field_right">
+                                {{ agent_form.agent_phone.errors }}
+                                {{ agent_form.agent_phone }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="button_con">
+                    <input type="submit" value="save" class="button">
+                </div>
+
+            </form>
+        {% endif %}
+
+
+
+        {% if book_form %}
+            <div class="div book">
+                <h2 class="padding">Allocate book</h2>
+                <form action="{% url 'system:allocate' agent.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form_container">
+
+                        <div id="create_left" class="form_left inputs">
+
+                            <div id="" class="field_flex_con">
+                                <div class="field_left">{{ book_form.number_from.label_tag }}</div>
+                                <div class="field_right">
+                                    {{ book_form.number_from.errors }}
+                                    {{ book_form.number_from }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form_right inputs">
+
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="button_con">
+                        <input type="submit" value="Allocate" class="button" id="allocate">
+                    </div>
+
+                </form>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'system\base.html' %}
+{% block title %} Receipts | Hospital Cash Plan {% endblock %}
+{% block heading %}Receipts{% endblock %}
+{% block centre %}
+
+
+
+    {% if receipt %}
+        <div id="receipt">
+            <h2 class="padding">Receipt</h2>
+            <table id="list" class="tables">
+
+                <tr class="table_head">
+                    <th>Sirius Ref</th>
+                    <th>Effective Date</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                    <th>Payment Ref</th>
+                </tr>
+                <tr>
+                    <th scope="row"><a href="#">{{ receipt.payment_id }}</a></th>
+                    <td><a href="#">{{ receipt.payment_date }}</a></td>
+                    <td class="centre">{{ receipt.payment_method }}</td>
+                    <td class="centre">{{ receipt.payment_value }}</td>
+                    <td class="centre">{{ receipt.payment_proposal_number }}</td>
+                </tr>
+            </table>
+        </div>
+    {% else %}
+        <p> No receipt </p>
+    {% endif %}
+
+    {% if sch %}
+	    <h2 class="padding">Policy Search</h2>
+        <form action="{% url 'system:match_receipt' receipt.id %}" method="post">
+            {% csrf_token %}
+            <div class="field_flex_con">
+                <div class="field_left">{{ form.search.label_tag }}</div>
+                <div class="field_right">
+                    {{ form.search.errors }}
+                    {{ form.search }}
+                </div>
+            </div>
+            <div class="button_con">
+                <input type="submit" value="Search" class="button">
+            </div>
+        </form>
+    {% else %}
+
+        {% if policy_list %}
+            <table id="list" class="paginated tables">
+                <thead>
+                    <tr id="table_head">
+                        <th>Policy number</th>
+                        <th>Insured name</th>
+                        <th>Inception date</th>
+                        <th>Beneficiaries</th>
+                        <th>Monthly premium</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for policy in policy_list %}
+                    <tr>
+                        <th scope="row"><a href="{% url 'system:match' policy.id receipt.id %}">{{ policy.proposal_number }}</a></th>
+                        <td><a href="{% url 'system:match' policy.id receipt.id%}">{{ policy.insured.insured_name.title }} {{ policy.insured.insured_surname.title }}</a></td>
+                        <td class="centre"><a href="{% url 'system:match' policy.id receipt.id %}">{{ policy.inception_date }}</a></td>
+                        <td class="centre"><a href="{% url 'system:match' policy.id receipt.id %}">{{ policy.dependant_set.count }}</a></td>
+                        <td class="centre"><a href="{% url 'system:match' policy.id receipt.id %}">{{ policy.monthly_premium }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot></tfoot>
+            </table>
+        {% else %}
+            <p>No policies available</p>
+            <a href="{% url 'system:receipts' %}" class="button">Back to receipts</a>
+        {% endif %}
+    {% endif %}
+{% endblock %}

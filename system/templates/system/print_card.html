@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/dosis.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/print_styles.css' %}">
+    <title>HCP Card - {{ policy.insured.insured_name }} {{ policy.insured.insured_surname }}</title>
+</head>
+<body>
+
+    <div id="card_page_1" class="card_page">
+        <h3 id="card_name" class="text">{{ policy.insured.insured_name.title }} {{ policy.insured.insured_surname.title }}</h3>
+        <p class="text label label_id">ID Number</p>
+        <h5 class="text value_id">{{ policy.insured.insured_id_number }}</h5>
+        <p class="text label label_inception">Inception date</p>
+        <h5 class="text value_inception">{{ policy.inception_date }}</h5>
+        <p class="text label label_number">Policy number</p>
+        <h4 class="text value_number">{{ policy.proposal_number }}</h4>
+    </div>
+    <div id="card_page_2" class="card_page">
+        <table id="dependants_card">
+            <tr>
+                <th class="card_head">Name</th>
+                <th class="card_head">Date of birth</th>
+                <th class="card_head">Plan</th>
+            </tr>
+            {% for dependant in dependants %}
+            <tr>
+                <td class="table_values">{{ dependant.dependant_name.title}}</td>
+                <td class="centre table_values">{{ dependant.dependant_dob }}</td>
+                <td class="centre table_values">{{ dependant.plan.plan_name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

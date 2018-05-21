@@ -1,0 +1,142 @@
+{% extends 'system\base.html' %}
+{% block title %} Hospital Cash Plan | Reports {% endblock %}
+{% block heading %}Reports{% endblock %}
+{% block centre %}
+
+{% if form %}
+    <div class="div">
+        <h2 class="div_title">Gross Premium Written (GPW)</h2>
+        <form action="{% url 'system:reports' %}" method="post">
+            {% csrf_token %}
+
+            <table id="search">
+                <tr>
+                    <th colspan='4'>Inception date {{ form.errors }} </th>
+                </tr>
+                <tr>
+                    <th colspan='4'>{{ form.errors }} </th>
+                </tr>
+                <tr>
+                    <td colspan="2">{{ form.inception_date_from.errors }}</td>
+                    <td colspan="2">{{ form.inception_date_to.errors }}</td>
+                </tr>
+                    <td>{{ form.inception_date_from.label_tag }}</td>
+                    <td>{{ form.inception_date_from }}</td>
+                    <td>{{ form.inception_date_to.label_tag }}</td>
+                    <td>{{ form.inception_date_to }}</td>
+                </tr>
+
+            </table>
+
+            <input type="submit" value="Filter" class="button">
+        </form>
+    </div>
+{% endif %}
+
+{% if lodgement_report_form %}
+    <div class="div">
+        <h2 class="div_title">Lodgement report</h2>
+        <form action="{% url 'system:lodgement' %}" method="post">
+            {% csrf_token %}
+            <p>{{ form.errors }}</p>
+            <table id="lodgement">
+                <tr>
+                    <td colspan="2">{{ lodgement_report_form.installment_date_from.errors }}</td>
+                    <td colspan="2">{{ lodgement_report_form.installment_date_to.errors }}</td>
+                    <td colspan="2">{{ lodgement_report_form.payment_method.errors }}</td>
+                </tr>
+                <tr>
+                    <td>{{ lodgement_report_form.installment_date_from.label_tag }}</td>
+                    <td>{{ lodgement_report_form.installment_date_from }}</td>
+                    <td>{{ lodgement_report_form.installment_date_to.label_tag }}</td>
+                    <td>{{ lodgement_report_form.installment_date_to}}</td>
+                    <td>{{ lodgement_report_form.payment_method.label_tag}}</td>
+                    <td>{{ lodgement_report_form.payment_method}}</td>
+                </tr>
+            </table>
+
+            <input type="submit" value="Go" class="button">
+
+        </form>
+    </div>
+
+    <form action="{% url 'system:download_lodgement' %}" method="post">
+        {% csrf_token %}
+        <input id="date_from" name="date_from" type="hidden" value="{{ lodgement_report_form.installment_date_from.data }}" >
+        <input id="to" type="hidden" name="to" value="{{ lodgement_report_form.installment_date_to.data }}" >
+        <input id="payment_method" name="payment_method" type="hidden" value="{{ lodgement_report_form.payment_method.data }}" >
+        <input type="submit" value="Download" class="button">
+    </form>
+{% endif %}
+
+{% if policy_list %}
+    <table>
+    <tr>
+        <th class="table_head_side">Number of policies</th>
+        <td class="table_data">{{ policy_list.count }}</td>
+    </tr>
+    <tr>
+        <th class="table_head_side">Annual premium </th>
+        <td class="table_data">{{ annual_premium }}</td>
+    </tr>
+
+    </table>
+
+	<table id="list">
+		<tr id="table_head">
+			<th>Policy number</th>
+			<th>Insured name</th>
+			<th>Inception date</th>
+			<th>Beneficiaries</th>
+			<th>Monthly premium</th>
+			<th>Created by</th>
+			<th>Date created</th>
+		</tr>
+		{% for policy in policy_list %}
+		<tr>
+			<th scope="row"><a href="{% url 'system:view_policy' policy.id %}">{{ policy.proposal_number }}</a></th>
+			<td><a href="{% url 'system:view_policy' policy.id %}">{{ policy.insured.insured_name }} {{ policy.insured.insured_surname }}</a></td>
+			<td class="centre">{{ policy.inception_date }}</td>
+			<td class="centre">{{ policy.dependant_set.count }}</td>
+			<td class="centre">{{ policy.monthly_premium }}</td>
+			<td class="centre">{{ policy.created_by }}</td>
+			<td class="centre">{{ policy.date_created }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+{% endif %}
+
+{% if instalment_list %}
+    <table id="list">
+		<tr id="table_head">
+			<th>Policy number</th>
+			<th>Insured name</th>
+			<th>Monthly instalment</th>
+			<th>Employer</th>
+			<th>Payment method</th>
+			<th>Account balance</th>
+			<th>Next due date</th>
+		</tr>
+		{% for instalment in instalment_list %}
+		<tr>
+			<th scope="row"><a href="{% url 'system:view_policy' instalment.policy.id %}">{{ instalment.policy.proposal_number }}</a></th>
+			<td><a href="{% url 'system:view_policy' instalment.policy.id %}">{{ instalment.policy.insured.insured_name }} {{ instalment.policy.insured.insured_surname }}</a></td>
+			<td class="centre">{{ instalment.instalment_amount }}</td>
+			<td class="centre">{{ instalment.policy.insured.insured_employer }}</td>
+			<td class="centre">{{ instalment.policy.payment_method }}</td>
+			<td class="centre">{{ instalment.policy.total_receipts.outstanding_now }}</td>
+			<td class="centre">{{ instalment.policy.total_receipts.next_date }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+{% endif %}
+
+<script>
+    var myCalendar = new dhtmlXCalendarObject([
+            "id_inception_date_from",
+            "id_inception_date_to",
+            "id_installment_date_from",
+            "id_installment_date_to"
+    ]);
+</script>
+{% endblock %}

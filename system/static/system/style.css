@@ -1,0 +1,702 @@
+/**********************************************************
+                         B A S E
+ **********************************************************/
+body {
+	background: black url("images/background_x.jpg") repeat top left;
+	font-family: 'Dosis';
+  	font-style: normal;
+  	font-weight: 400; 
+  	background-size: 100%;
+
+}
+#title {
+	background-color: rgba(256, 256, 256, 0.1);
+	font-size: 22px;
+	color: white;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 10px; 
+	box-sizing: border-box;
+	overflow: hidden;
+	width: 100%;
+	text-align: left;
+
+}
+
+
+
+#logo {
+	display: inline-block;
+	margin-right: 20px
+}
+
+#title h1 {
+	display: inline-block;
+}
+
+/****************NAVIGATION************************/
+
+#menu {
+    list-style-type: none;
+	margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /*background-color: #999;*/
+	background:-webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.39, rgb(189,189,189)),
+        color-stop(0.7, rgb(224,224,224))
+        );
+    background:-moz-linear-gradient(
+        center bottom,
+        rgb(189,189,189) 39%,
+        rgb(224,224,224) 70%
+        );
+}
+
+.menu-item {
+	float: left;
+}
+
+.dropbtn {
+	color: #00A859;
+	font-weight: 600;
+}
+
+.menu-item a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.menu-item a:hover, .dropdown:hover .dropbtn {
+    background-color: #00A859;
+}
+
+
+.menu-item.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+	background-color: rgba(0, 168, 89, .5);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+footer {
+	background-color: rgba(256, 256, 256, 0.1);
+  	font-size: 1.2em;
+  	text-align: center;
+  	clear:both;
+  	color: #ccc;
+  	max-width: 960px;
+  	margin: 0 auto;
+  	padding: 5px 0;
+
+}
+#info, footer p {
+	background-color: rgba(0, 168, 89, .5);
+	border-style: solid none;
+	border-color: #00A859;
+	color: #BAE0CE;
+	border-width: 1px;
+	width: 102.2%;
+	box-sizing: border-box;
+	font-size: 15px;
+	padding: 0;
+	margin: 10px 0 5px -10px;
+}
+
+footer p {
+	width: 100%;
+	margin-left: 0;
+}
+
+#user, #heading {
+	margin: 3px;	
+	width: auto;
+	float: left;
+}
+
+#user {
+	
+}
+#heading {
+	margin-left: 25%; 
+}
+
+#nav {
+	float: right;
+}
+
+#nav a {
+	font-size: 1.2em;
+	font-weight: 600;
+	color: #FFF;
+	text-decoration: none;
+	margin: 0;
+	display: inline-block;
+	padding: 0 15px 3px 15px;
+}
+
+#nav a:hover {
+	background-color: #FFF;
+	color:#00A859;
+}
+
+
+
+h1 {
+	margin: 0;
+}
+
+
+
+.content {
+	max-width: 960px;
+	margin: auto;
+} 
+
+/******************************************************************
+                  C R E A T E   P O L I C Y
+ ******************************************************************/
+.name input {
+	width: 220px;
+}
+
+.id input {
+	width: 120px;
+}
+
+.dob input {
+	width: 80px
+}
+
+.rel input {
+	width: 150px;
+}
+
+#surname, #employer {
+	float: left;
+	width: 48%;
+}
+
+#name, #occupation {
+	float: right;
+	width: 48%;
+}
+
+#gender {
+	float: left;
+	margin-right: 30px;
+}
+
+#id {
+	width: 150px;
+	float: left;
+	margin-bottom: 5px;
+	
+}
+
+#dob {
+	width: 100px;
+	float: right;
+	margin-bottom: 5px;
+	
+}
+
+
+
+#personal_info {
+	width: 46%;
+	float: left;
+}
+
+#contact_details {
+	width: 46%;
+	float: right;
+}
+
+
+.form_heading {
+	display: block;
+	text-align: center;
+	border-color: #00A859;
+	background-color: #FFF;
+	border-width: 2px 0;
+	border-style: solid;
+	color: #00A859;
+	margin-bottom: 5px;
+	padding-bottom: 5px;
+}
+
+.div_title {
+	background-color: #00A859;
+	margin: -10px 0 10px -32px;
+	width: 104%;
+	padding: 3px 20px;
+	border-radius: 20px;
+	box-sizing: border-box;
+	font-size: 1.2em;
+
+}
+
+#policy_details {
+	clear: both;
+}
+
+#insured_details,
+#policy_details,
+#dependats_details,
+.div {
+	background-color: rgba(92,164,122, 0.2);
+	padding: 0 2% 2% 2%;
+	margin:2%;
+	border-radius: 10px;
+	border: 1px solid #00A859;
+}
+
+#dependats_details {
+	padding-left: 2px;
+}
+#dependants {
+	width: 500px;
+}
+
+#insured_details label,
+#policy_details label {
+	display: block;
+	color: #BAE0CE;
+
+}
+
+#insured_details input{
+	width: 100%;
+}
+
+
+
+#insured_details input, 
+#insured_details select,
+#insured_details textarea,
+#policy_details input, 
+#policy_details select,
+td input,
+td select,
+div input,
+#email_text {
+	display: block;
+	outline: none;
+	background-color: #75C6A0;
+	border-radius: 10px;
+	padding: 5px;
+	border: 1px solid #00A859;
+	margin-bottom: 10px;
+}
+
+#insured_details input:focus,
+#insured_details select:focus,
+#insured_details textarea:focus,
+#policy_details input:focus,
+#policy_details select:focus,
+td input:focus,
+td select:focus,
+div input:focus {
+	border-color: #FFFFFF;
+}
+
+#insured_details h4 {
+	color: #00A859;
+	font-size: 24px;
+	margin: 5px 0 5px 0;
+}
+
+
+/**********Table************/
+.right {
+	width: 35%;
+	padding-left: 15%;
+}
+
+
+td {
+	margin: 0;
+}
+
+
+.button {
+	position: relative;
+	display: block;
+	color: #FFF;
+	margin: 0 auto;
+	background: #00A859;
+	font-size: 18px;
+	text-align: center;
+	font-style: normal;
+	width: 80%;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	border-style: none;
+
+}
+
+.button:hover {
+	background-color:#00A843 ;
+}
+
+
+
+
+/**********************************************************
+                  V I E W    D E T A I L S
+**********************************************************/
+#view_insured_details {
+	width: 30%;
+	float: left;
+}
+
+#view_insured_details th[scope="row"] {
+	text-align: right; 
+}
+
+#view_insured_details td {
+	font-weight: bold;
+	color: #FFF;
+}
+#view_insured_details table {
+	width: 98%
+}
+
+.musoro {
+	color: #00A859;
+	text-decoration: underline;
+}
+
+#view_beneficiaries table {
+	width: 96%
+
+}
+#agent, #from {
+	width: 25%;
+}
+
+#view_policy_details th,
+.table_head_side {
+	text-align: right;
+}
+
+#view_policy_details td,
+#instalments td,
+#payments td,
+#view_beneficiaries td,
+.table_data {
+	color: #FFF;
+}
+
+#instalments {
+	width: 16%;
+	float: left;
+}
+
+#payments {
+	width: 29.2%;
+	float: right;
+}
+
+.money {
+	text-align: right;
+}
+
+#paying_authority {
+	display: inline;
+}
+
+/*****************************************************************
+                      V I E W    A G E N T
+******************************************************************/
+#agent_policy_totals td {
+	background-color: rgba(0, 168, 89, .5);
+	color: #FFF;
+	border-style: solid none;
+	border-color: #FFF;
+	border-width: 1px;
+	font-weight: 600;	
+}
+
+#policy_list table {
+	width: 94%;
+	border-collapse: collapse;
+	margin: auto;
+}
+
+#download {
+	display: inline-block;
+	background-color:rgba(0, 168, 89, .5);
+	border-radius: 5px;
+	margin: 20px auto;
+	padding: 5px 20px;
+}
+
+#download:hover, {
+	background-color: #00A859;
+	color: #00A859;
+}
+
+
+/*********************************************************
+                        I N D E X
+**********************************************************/
+#panel {
+    display: none;
+}
+
+
+
+#list,
+#agent_list,
+#policy_list,
+.table {
+	border-collapse: collapse;
+	margin: auto;
+	width: 100%;
+	color: #FFF;
+}
+
+#search td,
+#lodgement td {
+	color:  #FFF;
+}
+
+#table_head th,
+#agent_table_head th,
+#policy_list th,
+.table th{
+	background-color: #00A859;
+	color: #000;
+}
+
+.centre {
+	text-align: center;
+}
+#list a:visited,
+#list a:link,
+#agent_list a:visited,
+#agent_list a:link,
+#policy_list a:visited,
+#policy_list a:link {
+	color: #FFF;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+#list tr:nth-child(odd),
+#agent_list tr:nth-child(odd),
+#policy_list tr:nth-child(odd),
+.table tr:nth-child(odd){
+	background-color: rgba(92,164,122, 0.2);
+	
+}  
+
+#list tr:nth-child(even),
+#agent_list tr:nth-child(even),
+#policy_list tr:nth-child(even),
+.table tr:nth-child(even){
+	background-color: rgba(186,224,206, 0.2);
+
+} 
+#list td,
+#list th 
+#agent_list td,
+#agent_list th,
+#policy_list td,
+#policy_list th,
+.table td,
+.table th{
+	margin: 0;
+	padding-top: .45em;
+	padding-bottom: .45em;
+}
+
+#list tr:hover,
+#list th:hover,
+#agent_list tr:hover,
+#agent_list th:hover,
+#policy_list tr:hover,
+.table tr:hover,{
+	background-color: rgba(0, 168, 89, .5);
+	color: #000;
+}
+
+
+#search td {
+	vertical-align: middle;
+}
+
+#search input {
+	width: 80%;
+}
+
+#search,
+#lodgement {
+	width: 96%;
+}
+
+
+#search .musoro h3 {
+	margin-bottom: 2px;
+}
+/* float clearfix */
+
+.group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+
+/**********************************************************
+                     P A G I N A T I O N
+***********************************************************/
+
+.paging-nav {
+	text-align: center;
+	padding-top: 2px;
+}
+.paging-nav a {
+	margin: auto 1px;
+	text-decoration: none;
+	display: inline-block;
+	padding: 1px 7px;
+	background: rgba(0, 168, 89, .5);
+	color: white;
+	border-radius: 3px;
+}
+
+.paging-nav .selected-page {
+  background: #187ed5;
+  font-weight: bold;
+}
+
+/**********************************************************
+            A G E N T   S T A T E  M E N T S
+ **********************************************************/
+
+#email_text {
+	width: 98%;
+}
+
+/**********************************************************
+                  A D D   A G E N T
+**********************************************************/
+.add_agent {
+	width: 40%;
+	float: left;
+}
+
+.add_agent ul {
+	list-style: none;
+	padding-left: 10px;
+}
+.add_agent label,
+.add_agent p,
+.book label{
+	color: #BAE0CE;
+}
+
+.add_agent p {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+
+#id_agent_code {
+	width: 100px;
+}
+
+.add_agent ul li:nth-child(1) {
+	display: inline-block;
+	float: left;
+}
+
+.add_agent ul li:nth-child(2) {
+	float: right;
+	padding-right: 10px;
+}
+
+.add_agent ul li:nth-child(3) {
+	clear: both;
+}
+
+#id_agent_name,
+#id_agent_email,
+#id_agent_phone {
+	width: 95%;
+}
+
+.book {
+	float: right;
+	width: 40%;
+	padding: 0 10px 5px 10px;
+}
+
+#allocate {
+	width: 30%;
+	float: right;
+	margin: 18px 10px 0 0;
+}
+
+
+.book ul:not(:first-child) {
+	padding: 0 10px 10px 10px;
+	margin: 0;
+	display: inline-block;
+	list-style: none;
+
+}
+
+.message p {
+	background-color: #BAE0CE;
+	font-weight: 600;
+	text-align: center;
+}
+
+.errorlist li {
+	list-style: none;
+	display: block;
+	background-color: #fbcb09;
+	color: #FFF;
+	font-weight: 700;
+}
+
+
+/**********************************************************
+               C O M M   S T A T E M E N T
+**********************************************************/
+
+#download_statement {
+	margin-top: 20px;
+}
+

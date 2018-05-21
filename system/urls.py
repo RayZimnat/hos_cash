@@ -1,0 +1,43 @@
+from django.conf.urls import url
+
+from . import views
+
+urlpatterns = [
+	url(r'^$', views.index, name='index'),
+	url(r'^agents/$', views.agent_search, name='agent_search'),
+	url(r'^create_policy/$', views.create_policy, name='create_policy'),
+	url(r'^cancel_policy/(?P<pk>[0-9]+)/$', views.cancel_policy, name='cancel_policy'),
+	url(r'^dependant_endorsement/(?P<pk>[0-9]+)/$', views.dependant_endorsement, name='dependant_endorsement'),
+	url(r'^insured_endorsement/(?P<pk>[0-9]+)/$', views.insured_endorsement, name='insured_endorsement'),
+	url(r'^view_policy/(?P<pk>[0-9]+)/$', views.view_policy, name='view_policy'),
+	url(r'^print_card/(?P<pk>[0-9]+)/$', views.print_card, name='print_card'),
+	url(r'^agents_list/$', views.list_view_agents, name='agents_list'),
+	url(r'^view_agent/(?P<pk>[0-9]+)/$', views.view_agent, name='view_agent'),
+	url(r'^download/(?P<pk>[0-9]+)/$', views.download, name='download'),
+	url(r'^reports/$', views.reports, name='reports'),
+	url(r'^reports/lodgement$', views.lodgement, name='lodgement'),
+	url(r'^reports/lodgement/download$', views.download_lodgement, name='download_lodgement'),
+	url(r'^reports/unmatched$', views.unmatched_report, name='unmatched'),
+	url(r'^reports/gwp_report/$', views.gwp_report, name='gwp_report'),
+	url(r'^clients/$', views.download_clients, name='clients'),
+	url(r'^receipts/$', views.receipts, name='receipts'),
+	url(r'^auto_match/$', views.auto_match, name='auto_match'),
+	url(r'^match_receipt/(?P<pk>[0-9]+)/$', views.match_receipt, name='match_receipt'),
+	url(r'^match/(?P<pk>[0-9]+)/(?P<rk>[0-9]+)/$', views.match, name='match'),
+	url(r'^policy_versions/(?P<pk>[0-9]+)/(?P<rn>[0-9]+)/(?P<en>[0-9]+)/$', views.policy_versions,
+		name='policy_versions'),
+	url(r'^add_paying_authority/$', views.add_paying_authority, name='add_paying_authority'),
+	url(r'^send_statements/$', views.send_statements, name='send_statements'),
+	url(r'^agent_statements/$', views.agent_statements, name='agent_statements'),
+	url(r'^comm_statements/$', views.comm_statements, name='comm_statements'),
+	url(r'^download_statement/$', views.download_statement, name='download_statement'),
+	url(r'^download_dev/$', views.download_dev, name='download_dev'),
+	url(r'^download_dev1/$', views.download_dev1, name='download_dev1'),
+	url(r'^download_policy_list/$', views.download_policy_list, name='download_policies'),
+	url(r'^add_agent/$', views.add_agent, name='add_agent'),
+	url(r'^allocate_book/(?P<pk>[0-9]+)/$', views.allocate_book, name='allocate_book'),
+	url(r'^allocate/(?P<agent>[0-9]+)/$', views.allocate, name='allocate'),
+	url(r'^ajax/resend_sms/$', views.resend_sms, name='resend_sms'),
+	url(r'^test/$', views.test, name='test'),
+	url(r'^new_business_report/$', views.new_business_report, name='new_business_report')
+]

@@ -1,0 +1,26 @@
+{% extends 'system/base.html' %}
+
+{% block title %} Agent Commissions {% endblock %}
+
+{% block heading %}{% endblock %}
+
+{% block centre %}
+
+    <div class="div">
+    	<h2 class="div_title">Lodgement report</h2>
+        <form action="{% url 'system:download_lodgement' %}" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <table>{{ form.as_table }}</table>
+
+            <input type="submit" value="Download" class="button">
+        </form>
+    </div>
+    <script type="text/javascript">
+        var myCalendar = new dhtmlXCalendarObject([
+                "id_date_from",
+                "id_to"
+        ]);
+    </script>
+{% endblock %}

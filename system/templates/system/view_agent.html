@@ -1,0 +1,49 @@
+{% extends 'system/base.html' %}
+
+{% block title %}{{ agent.agent_name }}{% endblock %}
+
+{% block centre %}
+	<h1 id="agent_head">{{ agent.agent_name }} ({{ agent.agent_code }}) </h1>
+
+	<div class="div" id="policy_list">
+		<table id="agents" class="paginated tables">
+			<thead>
+                <tr id="agents_table_head" class="table_head pag">
+                    <th>Proposal number</th>
+                    <th>Insured Name</th>
+                    <th>Monthly premium</th>
+                    <th>Outstanding premium</th>
+                    <th>Commision due</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for policy in agent.policy_set.all %}
+                <tr>
+                    <th scope="row"><a href="{% url 'system:view_policy' policy.id %}">{{ policy.proposal_number }}</a></th>
+                    <td><a href="{% url 'system:view_policy' policy.id %}">{{ policy.insured.insured_name.title }} {{ policy.insured.insured_surname.title }}</a></td>
+                    <td class="money">{{ policy.monthly_premium|floatformat:2}}</td>
+                    <td class="money">{{ policy.total_receipts.outstanding_now|floatformat:2}}</td>
+                    <td class="money">{{ policy.commission_outstanding|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="totals" id="agent_policy_totals">
+                    <td>Totals</td>
+                    <td></td>
+                    <td class="money">{{ agent_monthly_premium_total }}</td>
+                    <td class="money">fghg</td>
+                    <td class="money">{{ total_commission_outstanding|floatformat:2 }}</td>
+                </tr>
+            </tfoot>
+
+		</table>
+        <div class="button_con">
+            <a id="download" href="{% url "system:download" agent.id %}" class="button">Download</a>
+            <a href="{% url 'system:allocate_book' agent.id %}" class="button">Allocate book</a>
+        </div>
+		
+
+	</div>	
+
+{% endblock %}

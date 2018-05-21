@@ -1,0 +1,71 @@
+{% extends 'system\base.html' %}
+
+{% block title %}Add paying authority{% endblock %}
+
+{% block centre %}
+
+    <div class="div">
+
+        <h1 class='form_heading padding' >Add paying authority</h1>
+
+        {% if error_message %}<p class="error">{{ error_message }}</p>{% endif %}
+
+        {% for message in messages %}
+                <p class="message">{{ message }}</p>
+        {% endfor %}
+
+        <form action="{% url 'system:add_paying_authority' %}" method="post">
+            {% csrf_token %}
+
+            <div class="form_container">
+
+                <div id="create_left" class="form_left inputs">
+
+                    <div id="" class="field_flex_con">
+                        <div class="field_left">{{ paying_authority_form.paying_authority_name.label_tag }}</div>
+                        <div class="field_right">
+                            {{ paying_authority_form.paying_authority_name.errors }}
+                            {{ paying_authority_form.paying_authority_name }}
+                        </div>
+                    </div>
+
+
+
+                    <div id="" class="field_flex_con">
+                        <div class="field_left">{{ paying_authority_form.paying_cut_off_date.label_tag }}</div>
+                        <div class="field_right">
+                            {{ paying_authority_form.paying_cut_off_date.errors }}
+                            {{ paying_authority_form.paying_cut_off_date }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form_right inputs">
+
+                    <div id="" class="field_flex_con">
+                        <div class="field_left">{{ paying_authority_form.paying_contact_person.label_tag }}</div>
+                        <div class="field_right">
+                            {{ paying_authority_form.paying_contact_person.errors }}
+                            {{ paying_authority_form.paying_contact_person }}
+                        </div>
+                    </div>
+
+                    <div id="" class="field_flex_con">
+                        <div class="field_left">{{ paying_authority_form.paying_contact_number.label_tag }}</div>
+                        <div class="field_right">
+                            {{ paying_authority_form.paying_contact_number.errors }}
+                            {{ paying_authority_form.paying_contact_number }}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="button_con">
+                    <input type="submit" value="Save Paying Authority" class="button">
+            </div>
+        </form>
+    </div>
+{% endblock %}

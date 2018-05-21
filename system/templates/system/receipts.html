@@ -1,0 +1,45 @@
+{% extends 'system\base.html' %}
+{% block title %} Receipts | Hospital Cash Plan {% endblock %}
+{% block heading %}Receipts{% endblock %}
+{% block centre %}
+
+    <h1 class="padding">Unmatched receipts</h1>
+
+    {% if unmatched_receipt_list %}
+        <table id="receipt_list" class="paginated tables">
+            <thead>
+                <tr id="receipt_table_head" class="table_head pag">
+                    <th>Sirius Ref</th>
+                    <th>Effective Date</th>
+                    <th>Payment Method</th>
+                    <th>Amount</th>
+                    <th>Payment Ref</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for receipt in unmatched_receipt_list %}
+                <tr>
+                    <th scope="row"><a href="{% url "system:match_receipt" receipt.id %}">{{ receipt.payment_id }}</a></th>
+                    <td><a href="#">{{ receipt.payment_date }}</a></td>
+                    <td class="centre">{{ receipt.payment_method }}</td>
+                    <td class="centre">{{ receipt.payment_value }}</td>
+                    <td class="centre">{{ receipt.payment_proposal_number }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+
+            </tfoot>
+
+        </table>
+    {% else %}
+        <p> No unmatched receipts available</p>
+    {% endif %}
+
+    <div class="button_con">
+        <a id="auto_match" class="button" href="{% url "system:auto_match" %}">Auto match</a>
+    </div>
+{% endblock %}
+
+
+

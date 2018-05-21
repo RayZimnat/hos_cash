@@ -1,0 +1,99 @@
+@media print {
+    @page {
+        size: 3.370in 2.125in;
+        margin: 0;
+    }
+}
+
+
+html {
+    background: #b2b2b2;
+}
+
+body {
+    height: 4.0in;
+    width: 3.366in;
+    padding: 2mm;
+    font-family: Dosis;
+
+}
+
+.card_page {
+    height: 50%;
+    width: 100%;
+    position: relative;
+}
+
+.text {
+    position: absolute;
+    margin: 0;
+}
+
+.label {
+    font-size: 10px;
+}
+#card_name {
+    margin: 0px;
+    font-size: 18px;
+    top: 80px;
+}
+
+.label_id {
+    top: 110px;
+}
+
+.value_id {
+    top: 120px;
+}
+
+.label_inception {
+    top: 145px;
+}
+
+.value_inception {
+    top: 155px;
+}
+
+.label_number {
+    top: 135px;
+    left: 200px;
+    text-align: center;
+    width: 100px ;
+}
+
+.value_number {
+    top: 145px;
+    left: 200px;
+    text-align: center;
+    width: 100px ;
+    font-size: ;
+}
+#card_page_1 {
+    background: black url("images/front.jpg") no-repeat center ;
+    background-size: cover;
+}
+
+#card_page_2 {
+    page-break-before: always;
+    background: black url("images/back.jpg") no-repeat center ;
+    background-size: cover;
+
+}
+
+#dependants_card {
+    width: 100%;
+
+}
+
+.table_values {
+    font-size: 10px;
+}
+
+.centre {
+    text-align: center;
+}
+
+.card_head {
+    padding-top: 15px;
+    font-size: 12px;
+}

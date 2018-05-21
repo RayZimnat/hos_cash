@@ -1,0 +1,135 @@
+{% extends 'system/base.html' %}
+
+{% block title %}Endorsement{% endblock %}
+
+{% block centre %}
+    <div>
+        <h2 class="form_title">{{ policy.insured.insured_name.lower | capfirst }} {{ policy.insured.insured_surname.lower | capfirst }}</h2>
+
+        {% if error_message %}<p>{{ error_message }}</p>{% endif %}
+
+        <form action="{% url 'system:dependant_endorsement' policy.id %}" method="post">
+        {% csrf_token %}
+
+            <div class="form_container">
+                <div class="form_left">
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Surname</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_surname }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">First name(s)</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_name }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Gender</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_gender }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">ID Number</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_id_number }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Date of birth</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_dob }}</p>
+                    </div>
+
+                </div>
+                <div class="form_right">
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Phone number(s)</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_phone }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Email address</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_e_address }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Address</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_address }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Employer</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_employer }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Occupation</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_occupation }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">EC Number</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_ec_number }}</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="narration">
+                {{ policy_version_form }}
+                <!--label for="id_narration">Reason for endorsement</label>
+                <input id="id_narration" name="narration" type="datetime"></input-->
+            </div>
+
+
+            <div id="dependants">
+                <h3 id="ben">Beneficiaries </h3>
+                <div class="dep_cont">
+                    <div class="dep_row">
+                        <p class="dep_field_con">Full name</p>
+                        <p class="dep_field_con">ID number</p>
+                        <p class="dep_field_con">DOB</p>
+                        <p class="dep_field_con">Gender</p>
+                        <p class="dep_field_con">Relationship</p>
+                        <p class="dep_field_con">Plan</p>
+                        <p class="dep_field_con">S</p>
+                        <p class="dep_field_con">ID</p>
+                        <p class="dep_field_con">Del</p>
+                    </div>
+                    {{ dependant_formset.management_form }}
+                    {% for form in dependant_formset %}
+                        <div class="dep_row">
+                            {% for field in form %}
+                                <div class="dep_field_con">
+                                    {{ field.errors }}
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <div class="button_con">
+                <input type="submit" value="save" class="button">
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        var myCalendar = new dhtmlXCalendarObject([
+            "id_form-0-dependant_dob",
+            "id_form-1-dependant_dob",
+            "id_form-2-dependant_dob",
+            "id_form-3-dependant_dob",
+            "id_form-4-dependant_dob",
+            "id_form-5-dependant_dob",
+            "id_form-6-dependant_dob",
+            "id_form-7-dependant_dob",
+            "id_form-8-dependant_dob",
+            "id_form-9-dependant_dob",
+            "id_effective_date"
+        ]);
+    </script>
+
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'system\base.html' %}
+{% block title %} Hospital Cash Plan {% endblock %}
+
+
+{% block right %}
+    {% if policy_list %}
+        {% for policy in policy_list %}
+
+            <div class="right_info" id="right_{{ policy.id }}">
+                <p class="field_value centre">{{ policy.insured.insured_name.title }} {{ policy.insured.insured_surname.title }}</p>
+
+                <p class="field_name centre">Outstanding to date</p>
+                <p class="field_value money centre">{{ policy.total_receipts.outstanding_now }}</p>
+
+                <p class="field_name centre">Payment Method</p>
+                <p class="field_value centre">{{ policy.payment_method }} </p>
+                <p id="pay_auth" class="centre">({{ policy.paying_authority }})</p>
+
+                <div>
+                    <p class="field_value centre ben">Beneficiaries</p>
+                    {% for dependant in policy.dependant_set.all %}
+                        <p class="dep_name centre">{{ dependant.dependant_name.title }}</p>
+                        <p class="field_name plan centre">{{ dependant.plan }}</p>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+
+
+{% block centre %}
+
+{% if policy_list %}
+    {% for policy in policy_list %}
+
+        <div class="pol" id="{{ policy.id }}" onmouseover="showRight(right_{{ policy.id }})" onmouseout="hideRight(right_{{ policy.id }})">
+
+            <div class="clust">
+                <a href="{% url 'system:view_policy' policy.id %}">
+                    <div>
+                        <p class="field_value pol_name" >{{ policy.insured.insured_name.title }} {{ policy.insured.insured_surname.title }}</p>
+                        <div class="in_clust">
+                           <div>
+                                <p class="field_value small">{{ policy.proposal_number }}</p>
+                            </div>
+                            <div>
+                                <p class="field_name">Agent :</p>
+                                <p class="field_value small">{{ policy.agent.agent_name.title }}</p>
+                            </div>
+                            <div >
+                                <p class="field_name">Unit</p>
+                                <p class="field_value small">tba</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="mon_prem">
+                <a href="{% url 'system:view_policy' policy.id %}">
+                    <p class="field_name">Monthly premium</p>
+                    <p class="field_value small">{{ policy.monthly_premium }}</p>
+                </a>
+            </div>
+
+            <div class="prop_date">
+                <a href="{% url 'system:view_policy' policy.id %}">
+                    <p class="field_name">Proposal date</p>
+                    <p class="field_value small">{{ policy.proposal_date | date:'N j, Y' }}</p>
+                </a>
+            </div>
+
+            <div class="inc_date">
+                <a href="{% url 'system:view_policy' policy.id %}">
+                    <p class="field_name">Inception date</p>
+                    <p class="field_value small">{{ policy.inception_date | date:'N j, Y' }}</p>
+                </a>
+            </div>
+
+            <div class="nxt_date">
+                <a href="{% url 'system:view_policy' policy.id %}">
+                    <p class="field_name">Next prem due</p>
+                    <p class="field_value small">{{ policy.total_receipts.next_date | date:'N j, Y' }}</p>
+                </a>
+            </div>
+
+        </div>
+
+
+
+
+    {% endfor %}
+
+
+
+
+{% else %}
+	<p> No policies available</p>
+{% endif %}
+
+{% endblock %}
+
+
+
+

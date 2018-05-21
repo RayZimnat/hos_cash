@@ -1,0 +1,69 @@
+{% extends 'system\base.html' %}
+{% load humanize %}
+{% block title %} GWP Report {% endblock %}
+{% block heading %}GWP Repot{% endblock %}
+{% block content %}
+
+    {% if form %}
+        <div class="div">
+            <h2 class="div_title">Gross Premium Written (GPW)</h2>
+            <form action="{% url 'system:gwp_report' %}" method="post">
+                {% csrf_token %}
+
+                <table id="search">
+                    <tr>
+                        <th colspan='4'>Inception date {{ form.errors }} </th>
+                    </tr>
+                    <tr>
+                        <th colspan='4'>{{ form.errors }} </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{{ form.date_from.errors }}</td>
+                        <td colspan="2">{{ form.date_to.errors }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.date_from.label_tag }}</td>
+                        <td>{{ form.date_from }}</td>
+                        <td>{{ form.date_to.label_tag }}</td>
+                        <td>{{ form.date_to }}</td>
+                    </tr>
+
+                </table>
+
+                <input type="submit" value="Filter" class="button">
+            </form>
+        </div>
+
+    {% endif %}
+
+    {%  if scheme_list %}
+        <table class="table">
+            <tr id="">
+                <th>Scheme</th>
+                <th>Premium</th>
+                <th>Paid up premium</th>
+            </tr>
+            {% for scheme  in scheme_list %}
+            <tr>
+                <td class="">{{ scheme }}</td>
+                <td class="centre">{{ premium_list|get_value:scheme|floatformat:2|intcomma }}</td>
+                <td class="centre">{{ paid_up_list|get_value:scheme|floatformat:2|intcomma }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% endif %}
+
+
+<script>
+    var myCalendar = new dhtmlXCalendarObject([
+            "id_inception_date_from",
+            "id_inception_date_to",
+            "id_installment_date_from",
+            "id_installment_date_to"
+    ]);
+</script>
+
+
+
+{% endblock %}

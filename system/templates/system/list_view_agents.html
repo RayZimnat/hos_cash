@@ -1,0 +1,32 @@
+{% extends 'system\base.html' %}
+{% block title %} Agents List {% endblock %}
+{% block heading %}Agents list{% endblock %}
+{% block centre %}
+
+    <h1 class="padding">Agents</h1>
+{% if agent_list %}
+	<table id="agent_list" class="paginated tables">
+        <thead>
+            <tr id="agent_table_head" class="table_head pag">
+                <th>Agent code</th>
+                <th>Name</th>
+                <th>Number of policies</th>
+                <th>Commission due</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for agent in agent_list %}
+            <tr>
+                <th scope="row"><a href="{% url 'system:view_agent' agent.id %}">{{ agent.agent_code }}</a></th>
+                <td><a href="{% url 'system:view_agent' agent.id %}">{{ agent.agent_name.title }}</a></td>
+                <td class="centre">{{ agent.policy_set.count }}</td>
+                <td class="centre">{{ agent.commission_total|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+	</table>
+{% else %}
+	<p> No agents available</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'system/base.html' %}
+
+{% block title %} Agents List {% endblock %}
+
+{% block heading %}Agents list{% endblock %}
+
+{% block centre %}
+
+    <div class="div">
+    	<h2 class="div_title">Search</h2>
+        <form action="{% url 'system:agent_statements' %}" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <table class="table">
+                <tr>
+                    <td colspan="2">{{ form.agent_code.errors }}</td>
+                    <td colspan="2">{{ form.agent_name.errors }}</td>
+                    <td colspan="2">{{ form.agent_branch.errors }}</td>
+                </tr>
+                <tr>
+                    <td>Agent Code</td>
+                    <td>{{ form.agent_code }}</td>
+                    <td>Agent Name</td>
+                    <td>{{ form.agent_name }}</td>
+                    <td>Branch</td>
+                    <td>{{ form.agent_branch }}</td>
+                </tr>
+            </table>
+            <input type="submit" value="Search" class="button">
+        </form>
+    </div>
+
+{% if agent_list %}
+    <form action="{% url 'system:send_statements' %}" method="post">
+        {% csrf_token %}
+        <table id="agent_list" class="paginated tables">
+            <thead>
+                <tr id="agent_table_head pag">
+                    <th>Agent code</th>
+                    <th>Name</th>
+                    <th>Email address</th>
+                    <th>Phone number</th>
+                    <th>Branch</th>
+                    <th><input type="checkbox" id="checkAll"/>Selected</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for agent in agent_list %}
+                <tr>
+                    <th scope="row"><a href="#">{{ agent.agent_code }}</a></th> <!-- to link this to individual view page -->
+                    <td><a href="#">{{ agent.agent_name }}</a></td>
+                    <td class="centre">{{ agent.agent_email }}</td>
+                    <td class="centre">{{ agent.agent_phone }}</td>
+                    <td class="centre">{{ agent.agent_branch }}</td>
+                    <td><input type="checkbox" name="agents[]" value="{{ agent.id }}"></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+        <div class ="div">
+            <h2 class="div_title">Email text</h2>
+
+            <textarea name="email_text" id="email_text"></textarea>
+        </div>
+
+        <input type="submit" value="Send statements" class="button">
+
+    </form>
+{% else %}
+	<p> No agents available</p>
+{% endif %}
+{% endblock %}

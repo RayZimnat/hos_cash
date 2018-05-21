@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'system/dosis.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'system/style_1.css' %}">
+    </head>
+    <body>
+        <div id="login_container">
+            <div id="login_left">
+                <div id="login_logo_cont">
+                    <img id="login_logo" src="{% static 'system/images/Title.png' %}">
+                </div>
+
+            </div>
+            <div id="login_right">
+                <div id="outer">
+                    <div id="inside">
+                        {% if form.errors %}
+                            <p class="errorlist">Your username and password didn't match. Please try again.</p>
+                        {% endif %}
+
+                        {% if next %}
+                            {% if user.is_authenticated %}
+                                <p>Your account doesn't have access to this page. To proceed,
+                                please login with an account that has access.</p>
+                            {% else %}
+                                <p>Please login to see this page.</p>
+                            {% endif %}
+                        {% endif %}
+
+                        <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+                            {% csrf_token %}
+                            <table id="login_table">
+                                <tr>
+                                    <td><input id="id_username" maxlength="254" name="username" type="text" placeholder="Username" /></td>
+                                </tr>
+                                <tr>
+                                    <td><input id="id_password" name="password" type="password" placeholder="Password"/></td>
+                                </tr>
+                            </table>
+
+                            <input id="login_button" type="submit" value="login" class="button"/>
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        </form>
+
+                        <p><a href="">Lost password?</a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>

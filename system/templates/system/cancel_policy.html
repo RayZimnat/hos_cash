@@ -1,0 +1,95 @@
+{% extends 'system/base.html' %}
+
+{% block title %}Cancellation{% endblock %}
+
+{% block centre %}
+    <div>
+        <h2 class="form_title">{{ policy.insured.insured_name.lower | capfirst }} {{ policy.insured.insured_surname.lower | capfirst }}</h2>
+
+        {% if error_message %}<p>{{ error_message }}</p>{% endif %}
+
+        <form action="{% url 'system:cancel_policy' policy.id %}" method="post">
+        {% csrf_token %}
+
+            <div class="form_container">
+                <div class="form_left">
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Surname</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_surname }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">First name(s)</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_name }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Gender</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_gender }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">ID Number</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_id_number }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Date of birth</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_dob }}</p>
+                    </div>
+
+                </div>
+                <div class="form_right">
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Phone number(s)</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_phone }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Email address</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_e_address }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Address</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_address }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Employer</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_employer }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Occupation</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_occupation }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">EC Number</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_ec_number }}</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="narration">
+                {{ form }}
+            </div>
+
+
+            <div class="button_con">
+                <input type="submit" value="Cancel Policy" class="button">
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        var myCalendar = new dhtmlXCalendarObject([
+            "id_date"
+
+        ]);
+    </script>
+
+{% endblock %}

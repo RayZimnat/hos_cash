@@ -1,0 +1,101 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'system/dosis.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/style.css' %}">
+    <link rel="stylesheet" href="{% static 'system/jquery-ui-1.11.4/jquery-ui.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/calendar/codebase/dhtmlxcalendar.css'%}">
+    <script type="text/javascript" src="{% static 'system/jquery-1.11.3.js' %}"></script>
+    <script src="{% static 'system/jquery-ui-1.11.4/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'system/script.js' %}"></script>
+    <script src="{% static 'system/paging.js' %}"></script>
+    <script src="{% static 'system/calendar/codebase/dhtmlxcalendar.js' %}"></script>
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+	<header>
+		<div id="title">
+			<a href="{% url "system:index" %}">
+				<img id="logo" src="{% static 'system/images/logo.png' %}">
+			</a>
+			<h1>Administration System</h1>
+        </div>
+
+        <div id="info" class="group">
+            <p id="user"> (<a href="{% url 'logout' %}">logout</a>) | {% now "M d, Y" %}</p>
+            <p id='heading'>{% block heading %}{% endblock %}</p>
+
+        </div>
+
+        </div>
+
+
+
+
+        <ul id="menu">
+            <li class="menu-item dropdown">
+                <a href="" class="dropbtn">Policy</a>
+                <div class="dropdown-content">
+                    <a href="{% url "system:create_policy" %}">Create new policy</a>
+                    <a href="#">Endorsement</a>
+                </div>
+            </li>
+
+            <li class="menu-item dropdown">
+                <a href="" class="dropbtn">Agents</a>
+                <div class="dropdown-content">
+                    <a href="{% url "system:add_agent" %}">Add agent</a>
+                    <a href="{% url "system:agents_list" %}">Agent list</a>
+                    <a href="{% url "system:comm_statements" %}">Commision statement</a>
+                    <a href="{% url "system:agent_statements" %}">Premium statement</a>
+                </div>
+            </li>
+
+            <li class="menu-item dropdown">
+                <a href="" class="dropbtn">Reports</a>
+                <div class="dropdown-content">
+                    <a href="{% url "system:gwp_report" %}">GWP report</a>
+                    <a href="#">Sign on SMS</a>
+                    <a href="#">Premium reminder</a>
+                    <a href="{% url "system:lodgement" %}">Lodgement</a>
+                </div>
+            </li>
+
+            <li class="menu-item dropdown">
+                <a href="" class="dropbtn">Admin</a>
+                <div class="dropdown-content">
+                    <a href="#">Add paying authority</a>
+                </div>
+            </li>
+
+            <li class="menu-item dropdown">
+                <a href="" class="dropbtn">Accounts</a>
+                <div class="dropdown-content">
+                    <a href="{% url "system:receipts" %}">Receipts</a>
+                </div>
+            </li>
+        </ul>
+
+
+    </header>
+	
+	<div class="content">
+    {% load humanize %}
+    {% block content %}{% endblock %}
+    </div>
+    <footer>
+    	<p>&copy; 2015 Ray Jowa.</p>
+    </footer>
+
+    <script type="text/javascript">
+            $(document).ready(function() {
+                $('.pag').paging({limit:10});
+            });
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+{% extends 'system\base.html' %}
+
+{% block title %}Create new policy{% endblock %}
+
+{% block js %}
+
+
+{% endblock %}
+
+{% block centre %}
+    <input type="hidden" id="id_url" value="{% url 'system:agent_search' %}">
+
+    <form action="{% url 'system:create_policy' %}" method="post">
+    {% csrf_token %}
+    <div>
+        {% if error_message %}<p class="errorlist">{{ error_message }}</p>{% endif %}
+        <h2 class="form_title">Create new policy</h2>
+        <div class="form_container">
+
+            <div id="create_left" class="form_left inputs" >
+
+                <div id="surname" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_surname.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_surname.errors }}
+                        {{ insured_form.insured_surname }}
+                    </div>
+                </div>
+
+                <div id="name" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_name.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_name.errors }}
+                        {{ insured_form.insured_name }}
+                    </div>
+                </div>
+
+                <div id="gender" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_gender.label_tag }}</div>
+                    <div class="field_right">
+                       {{ insured_form.insured_gender.errors }}
+                        {{ insured_form.insured_gender }}
+                    </div>
+                </div>
+
+                <div id="id" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_id_number.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_id_number.errors }}
+                        {{ insured_form.insured_id_number }}
+                    </div>
+                </div>
+
+                <div id="dob" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_dob.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_dob.errors }}
+                        {{ insured_form.insured_dob }}
+                    </div>
+                </div>
+
+                <div id="nationality" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_nationality.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_nationality.errors }}
+                        {{ insured_form.insured_nationality }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form_right inputs">
+
+                <div id="employer" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_employer.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_employer.errors }}
+                        {{ insured_form.insured_employer }}
+                    </div>
+                </div>
+
+                <div id="occupation" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_occupation.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_occupation.errors }}
+                        {{ insured_form.insured_occupation }}
+                    </div>
+                </div>
+
+                <div id="ec_number" class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_ec_number.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_ec_number.errors }}
+                        {{ insured_form.insured_ec_number }}
+
+                    </div>
+                </div>
+
+                <div class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_phone.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_phone.errors }}
+                        {{ insured_form.insured_phone }}
+                    </div>
+                </div>
+
+                <div class="field_flex_con">
+                <div class="field_left">{{ insured_form.insured_address.label_tag }}</div>
+                <div class="field_right">
+                    {{ insured_form.insured_address.errors }}
+                    {{ insured_form.insured_address }}
+                </div>
+                </div>
+
+
+                <div class="field_flex_con">
+                    <div class="field_left">{{ insured_form.insured_e_address.label_tag }}</div>
+                    <div class="field_right">
+                        {{ insured_form.insured_e_address.errors }}
+                        {{ insured_form.insured_e_address }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="policy_details">
+            <div class="pol_fields">
+
+                <div class="field_flex_con">
+                    <div class="field_left">{{ policy_form.agent.label_tag }}</div>
+                    <div class="field_right">
+                        {{ policy_form.agent.errors }}
+                        {{ policy_form.agent }}
+                        <input id="id_agent_show" name="agent_show" type="text">
+                        <div id="agent_drpdwn">
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field_flex_con">
+                    <div class="field_left">{{ policy_form.scheme.label_tag }}</div>
+                    <div class="field_right">
+                        {{ policy_form.scheme.errors }}
+                        {{ policy_form.scheme }}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="pol_fields">
+
+                <div class="field_flex_con">
+                    <div class="field_left">{{ policy_form.proposal_number.label_tag }}</div>
+                    <div class="field_right">
+                        {{ policy_form.proposal_number.errors }}
+                        {{ policy_form.proposal_number }}
+                    </div>
+                </div>
+
+                <div class="field_flex_con">
+                    <div class="field_left">{{ policy_form.proposal_date.label_tag }}</div>
+                    <div class="field_right">
+                        {{ policy_form.proposal_date.errors }}
+                        {{ policy_form.proposal_date }}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pol_fields">
+                <div class="field_flex_con">
+                    <div class="field_left">{{ policy_form.payment_method.label_tag }}</div>
+                    <div class="field_right">
+                        {{ policy_form.payment_method.errors }}
+                        {{ policy_form.payment_method }}
+                    </div>
+                </div>
+
+                <div class="field_flex_con">
+                    <div class="field_left">{{ policy_form.paying_authority.label_tag }}</div>
+                    <div class="field_right">
+                        {{ policy_form.paying_authority.errors }}
+                        {{ policy_form.paying_authority }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div id="dependants">
+            <h3 id="ben">Beneficiaries </h3>
+            <div class="dep_cont">
+                <div class="dep_row">
+                    <p class="dep_field_con">Full name</p>
+                    <p class="dep_field_con">ID number</p>
+                    <p class="dep_field_con">DOB</p>
+                    <p class="dep_field_con">Gender</p>
+                    <p class="dep_field_con">Relationship</p>
+                    <p class="dep_field_con">Plan</p>
+                    <p class="dep_field_con">S</p>
+                    <p class="dep_field_con">ID</p>
+                    <p class="dep_field_con">Del</p>
+                </div>
+                {{ dependant_formset.management_form }}
+                {% for form in dependant_formset %}
+                    <div class="dep_row">
+                        {% for field in form %}
+                            <div class="dep_field_con">
+                                {{ field.errors }}
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        <!--label for="sms">Send welcome sms?</label>
+        <input type="checkbox" name="sms" id="sms" checked-->
+    <div class="button_con">
+        <input type="submit" value="save" class="button">
+    </div>
+
+    </form>
+
+
+
+    <script>
+        var myCalendar = new dhtmlXCalendarObject([
+            "id_insured_dob",
+            "id_proposal_date",
+            "id_inception_date",
+            "id_dependant_set-0-dependant_dob",
+            "id_dependant_set-1-dependant_dob",
+            "id_dependant_set-2-dependant_dob",
+            "id_dependant_set-3-dependant_dob",
+            "id_dependant_set-4-dependant_dob",
+            "id_dependant_set-5-dependant_dob",
+            "id_dependant_set-6-dependant_dob",
+            "id_dependant_set-7-dependant_dob",
+            "id_dependant_set-8-dependant_dob",
+            "id_dependant_set-9-dependant_dob",
+        ]);
+        myCalendar.hideTime();
+    </script>
+
+{% endblock %}
+
+{% block right %}
+
+{% endblock %}

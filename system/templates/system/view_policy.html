@@ -1,0 +1,274 @@
+{% extends 'system/base.html' %}
+
+
+{% block title %}{{ policy.insured.insured_name.title}} {{ policy.insured.insured_surname.title }}{% endblock %}
+
+
+{% block centre %}
+    <div>
+        <h2 class="form_title">{{ policy.insured.insured_name.title }} {{ policy.insured.insured_surname.title }}</h2>
+        <div class="form_container">
+            <div class="form_left">
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Surname</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_surname.title }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">First name(s)</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_name.title }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Gender</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_gender }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">ID Number</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_id_number }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Date of birth</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_dob }}</p>
+                </div>
+
+            </div>
+            <div class="form_right">
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Phone number(s)</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_phone }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Email address</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_e_address }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Address</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_address.title }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Employer</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_employer }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Occupation</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_occupation }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">EC Number</p>
+                    <p class="field_right field_value">{{ policy.insured.insured_ec_number }}</p>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div id="tabs">
+            <ul class="tab">
+                <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Dependants')" id="deps">Dependants</a> </li>
+                <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Premiums')">Premiums</a></li>
+                <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Versions')">Versions</a> </li>
+                <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Sms')">Messages</a> </li>
+            </ul>
+
+            <div id="Dependants" class="tabcontent">
+                <table>
+                    <tr class="table_head">
+                        <th>Full Name</th>
+                        <th>ID Number</th>
+                        <th>Date of birth</th>
+                        <th>Relationship</th>
+                        <th>Plan</th>
+                        <th>Monthly premium</th>
+                    </tr>
+                    {% for dependant in dependants %}
+                    <tr>
+                        <td>{{ dependant.dependant_name.title}}</td>
+                        <td class="centre">{{ dependant.dependant_id_number }}</td>
+                        <td class="centre">{{ dependant.dependant_dob }}</td>
+                        <td class="centre">{{ dependant.dependant_relationship.title }}</td>
+                        <td class="centre">{{ dependant.plan.plan_name }}</td>
+                        <td class="money centre">{{ dependant.dependant_monthly_premium }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div id="Premiums" class="tabcontent">
+                <div id="prem_flex_con">
+                    <div id="instalments">
+                        <h2 class="prem_title">Instalments</h2>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                            </tr>
+                            {% for instalment in instalments %}
+                            <tr>
+                                <td class="centre">{{ instalment.instalment_date_due }}</td>
+                                <td class="money centre">{{ instalment.instalment_amount }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                    <div id="payments">
+                        <h2 class="prem_title">Receipts</h2>
+                        {% if payments %}
+                        <table>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Method</th>
+                                <th>Amount</th>
+                            </tr>
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.payment_id }}</td>
+                                <td class="centre">{{ payment.payment_date }}</td>
+                                <td class="centre">{{ payment.payment_method }}</td>
+                                <td class="money centre">{{ payment.payment_value }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        {% else %}
+                            No premium received yet
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="Versions" class="tabcontent">
+                <table>
+                    <tr class="table_head">
+                        <th>Date</th>
+                        <th>Version</th>
+                        <th>Narration</th>
+                    </tr>
+
+                    {% for version in versions %}
+                        <tr>
+                            <td class="centre">
+                                <a href="{% url 'system:policy_versions' policy.id version.renewal_version version.endorsement_version %}">
+                                    {{ version.version_date }}
+                                </a>
+                            </td>
+                            <td class="centre">
+                                <a href="{% url 'system:policy_versions' policy.id version.renewal_version version.endorsement_version %}">
+                                    {{ version.renewal_version }}.{{ version.endorsement_version }}
+                                </a>
+                            </td>
+                            <td class="centre">
+                                <a href="{% url 'system:policy_versions' policy.id version.renewal_version version.endorsement_version %}">
+                                    {{ version.narration }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+
+            <div id="Sms" class="tabcontent">
+                <table id="sms_list" class="paginated tables">
+                    <thead>
+                        <tr id="agent_table_head" class="table_head pag">
+                            <th>Date and time</th>
+                            <th>Message</th>
+                            <th>Status</th>
+                            <th>Resend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sms in smses %}
+                            <tr>
+                                <td>{{ sms.date_sent }}</td>
+                                <td>{{ sms.message }}</td>
+                                <td>{{ sms.status }}</td>
+                                <td><input type="button" value="Resend" class="button" onclick="resendSms({{ policy.id }},{{ sms.id }})" id="resend_sms_{{ sms.id }}"></td>
+                            </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    <div class="button_con">
+        <a href="{% url 'system:insured_endorsement' policy.id %}">
+            <input id='ins_det' type="button" value="Change insured details" class="button">
+        </a>
+
+        <a href="{% url 'system:dependant_endorsement' policy.id %}">
+            <input type="button" value="Change beneficiaries" class="button">
+        </a>
+
+        <a href="{% url 'system:print_card' policy.id %}">
+            <input type="button" value="Print card" class="button">
+        </a>
+
+    </div>
+
+    </div>
+{% endblock %}
+
+
+{% block right %}
+    <div id="policy_info">
+        <p class="field_name centre">Proposal Number:</p>
+        <p class="field_value centre">{{ policy.proposal_number }}</p>
+
+        <p class="field_name centre">Agency:</p>
+        <p class="field_value centre">{{ policy.agent.agent_name }}</p>
+
+        <p class="field_name centre">Proposal Date</p>
+        <p class="field_value centre">{{ policy.proposal_date}}</p>
+
+        <p class="field_name centre">Inception date:</p>
+        <p class="field_value centre">{{ policy.inception_date }}</p>
+
+        <p class="field_name centre">Payment Method</p>
+        <p class="field_value centre">{{ policy.payment_method }} </p>
+        <p id="pay_auth" class="centre">({{ policy.paying_authority }})</p>
+
+        <p class="field_name centre">Monthly premium</p>
+        <p class="field_value centre">{{ policy.monthly_premium }}</p>
+
+        <p class="field_name centre">Annual premium</p>
+        <p class="field_value centre">{{ policy.total_receipts.annual_premium }}</p>
+
+        <p class="field_name centre">Total received premium:</p>
+        <p class="field_value centre">{{ policy.total_receipts.payments_total }}</p>
+
+        <p class="field_name centre">Outstanding to date</p>
+        <p class="field_value centre">{{ policy.total_receipts.outstanding_now }}</p>
+
+        <p class="field_name centre">Total outstanding</p>
+        <p class="field_value centre">{{ policy.total_receipts.outstanding_total }}</p>
+
+        <p class="field_name centre">Next due date</p>
+        <p class="field_value centre">{{ policy.total_receipts.next_date }}</p>
+
+    </div>
+
+
+{% endblock %}
+<!--
+
+
+{% block content %}
+
+				<td id="agent"><a href="{% url 'system:view_agent' policy.agent.id %}">{{ policy.agent.agent_name }}</a></td>
+
+
+{% endblock %} -->
