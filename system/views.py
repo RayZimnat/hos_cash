@@ -1412,8 +1412,8 @@ def download_dev1(request):
     for pol in p:
         rec_refs = ''
 
-        rec_set = pol.payment_set.filter(payment_date__lte=datetime.date(2018,3,31),
-                                         payment_date__gte=datetime.date(2018,3,1))
+        rec_set = pol.payment_set.filter(payment_date__lte=datetime.date(2018,4,30),
+                                         payment_date__gte=datetime.date(2018,4,1))
 
         prem_paid = rec_set.aggregate(sum=Sum('payment_value'))['sum']
         count = rec_set.count()
