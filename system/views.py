@@ -199,7 +199,7 @@ def send_nb_sms(policy):
     ins_f_name = policy.insured.insured_name.title() + " " + policy.insured.insured_surname.title()
 
     agent_message = "Your HCP Policy Captured\n"\
-                    "Policy #: {}"\
+                    "Policy No: {}"\
                     "\nInsured: {}"\
                     "\nThank you for the support".format(policy.proposal_number, ins_f_name)
     client_sms = {
