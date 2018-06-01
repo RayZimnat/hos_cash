@@ -20,6 +20,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.template.context import RequestContext
 from django.template.defaulttags import register
@@ -28,7 +29,7 @@ from django.views import generic
 
 from .forms import (AgentSearchForm, CancelForm, PolicyForm, PolicyVersionForm, InsuredForm, LodgementReportForm,
                     LodgementDownloadForm, ReportForm, SearchForm, PayingAuthorityForm,GPWReportForm,AgentForm, BookForm)
-from .models import (Agent, Allocation, Book, Branch, Dependant, Payment, PayingAuthority, Policy, PolicyVersion,
+from .models import (Agent, Allocation, Book, Branch, Card, Dependant, Payment, PayingAuthority, Policy, PolicyVersion,
                      Insured, Instalment, Scheme, SMS)
 
 
@@ -439,6 +440,13 @@ def view_policy(request, pk):
 def print_card(request, pk):
 
     policy = get_object_or_404(Policy, id=pk)
+
+    user = User.objects.get(username=request.user.username)
+
+    card = Card(
+        policy=policy,
+        user=user
+    ).save()
 
     versions = policy.policyversion_set.all().order_by('-version_date')
     version = policy.policyversion_set.all().order_by('-version_date')[0]

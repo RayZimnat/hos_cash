@@ -2,12 +2,15 @@ from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
-from .models import ( Agent, Allocation, Branch, Book, Dependant, Insured, Instalment, Payment, Plan,
+from .models import ( Agent, Allocation, Branch, Book, Card, Dependant, Insured, Instalment, Payment, Plan,
 					  Policy, PolicyVersion, PayingAuthority, Scheme, SMS )
 
 class AgentAdmin(admin.ModelAdmin):
 	search_fields = ['agent_name']
 
+
+class CardAdmin(admin.ModelAdmin):
+    pass
 
 class PaymentResource(resources.ModelResource):
 	
@@ -35,16 +38,19 @@ class VersionInLine(admin.TabularInline):
     model = PolicyVersion
     readonly_fields = ('version_date',)
     extra = 1
-		
+
+class CardInLine(admin.StackedInline):
+	model = Card
 
 class PolicyAdmin(admin.ModelAdmin):
-	inlines = [DependantInLine, InstalmentInLine, VersionInLine]
+	inlines = [DependantInLine, InstalmentInLine, VersionInLine, CardInLine]
 	list_display = ('proposal_number', 'date_created', 'inception_date')
 	list_filter = ['date_created', ]
 	search_fields = ['proposal_number']
 
 
 admin.site.register(Insured)
+admin.site.register(Card)
 admin.site.register(Agent, AgentAdmin)
 admin.site.register(Allocation)
 admin.site.register(Branch)

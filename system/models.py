@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from dateutil.relativedelta import *
@@ -304,6 +305,16 @@ class Policy(models.Model):
     
         return "You're a star!"
         '''
+
+
+class Card(models.Model):
+    policy = models.ForeignKey(Policy)
+    user = models.ForeignKey(User)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "Card - " + self.policy.insured.insured_name[0] + ". " + self.policy.insured.insured_surname
+
 
 
 class PolicyVersion(models.Model):
