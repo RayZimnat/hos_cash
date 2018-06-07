@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
 	url(r'^agents/$', views.agent_search, name='agent_search'),
+	url(r'^cards/$', views.cards, name='cards'),
 	url(r'^create_policy/$', views.create_policy, name='create_policy'),
 	url(r'^cancel_policy/(?P<pk>[0-9]+)/$', views.cancel_policy, name='cancel_policy'),
 	url(r'^dependant_endorsement/(?P<pk>[0-9]+)/$', views.dependant_endorsement, name='dependant_endorsement'),

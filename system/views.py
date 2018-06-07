@@ -506,6 +506,12 @@ def list_view_agents(request):
 
 
 @login_required
+def cards(request):
+    card_list = Card.objects.order_by('-date')
+    return render(request, 'system/cards_printed.html', {'card_list': card_list})
+
+
+@login_required
 def download(request, pk):
 
     agent = get_object_or_404(Agent, id=pk)
@@ -1486,7 +1492,7 @@ def unmatched_report(request):
 
 
 def download_policy_list(request):
-    policies = Policy.objects.filter(agent__id=34)
+    policies = Policy.objects.all()
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="Policies.csv"'
@@ -1628,6 +1634,7 @@ def allocate_premiums(policy):
                         debit.instalment_paid = True
                         debit.instalment_paid_date = receipt.payment_date
                         debit.save()
+
 
 
 

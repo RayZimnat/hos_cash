@@ -76,6 +76,8 @@
                 <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Dependants')" id="deps">Dependants</a> </li>
                 <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Premiums')">Premiums</a></li>
                 <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Versions')">Versions</a> </li>
+                <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Claims')">Claims</a> </li>
+                <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Cards')">Cards</a> </li>
                 <li><a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Sms')">Messages</a> </li>
             </ul>
 
@@ -177,6 +179,31 @@
                 </table>
             </div>
 
+            <div id="Claims" class="tabcontent">
+                <p>Claims will go here</p>
+
+            </div>
+
+            <div id="Cards" class="tabcontent">
+                <div id="card_flex_con">
+                    <div id="card">
+                        <h2 class="prem_title">Printed card(s)</h2>
+                        <table>
+                            <tr>
+                                <th>Printed Date</th>
+                                <th>Printed by</th>
+                            </tr>
+                            {% for card in policy.card_set.all %}
+                            <tr>
+                                <td class="centre">{{ card.date }}</td>
+                                <td class="money centre">{{ card.user.username }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+
+            </div>
 
             <div id="Sms" class="tabcontent">
                 <table id="sms_list" class="paginated tables">

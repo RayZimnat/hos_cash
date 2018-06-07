@@ -1,0 +1,35 @@
+{% extends 'system/base.html' %}
+{% block title %} Cards Printed{% endblock %}
+{% block heading %} Cards Printed {% endblock %}
+{% block centre %}
+
+    <h1 class="padding">Cards Printed</h1>
+{% if card_list %}
+	<table id="card_list" class="paginated tables">
+        <thead>
+            <tr id="card_table_head" class="table_head pag">
+                <th>Date</th>
+                <th>Policy Number</th>
+                <th>Insured</th>
+                <th>Printed by</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in card_list %}
+            <tr>
+                <a href="{% url 'system:view_policy' card.policy.id %}">
+                <th scope="row"><a href="{% url 'system:view_policy' card.policy.id %}">{{ card.date }}</a></th>
+                <td><a href="{% url 'system:view_policy' card.policy.id %}">{{ card.policy.proposal_number }}</a></td>
+                <td><a href="{% url 'system:view_policy' card.policy.id %}">
+                    {{ card.policy.insured.insured_name }} {{ card.policy.insured.insured_surname }}</a></td>
+                <td class="centre"><a href="{% url 'system:view_policy' card.policy.id %}">{{ card.user.username }}</a></td>
+                </a>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+	</table>
+{% else %}
+	<p> No cards available</p>
+{% endif %}
+{% endblock %}
