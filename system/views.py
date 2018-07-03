@@ -1,10 +1,11 @@
 import calendar
 import csv
-import datetime
+import datetime, time
 import django_excel as excel
 import io
 import json
 import pyexcel.ext.xlsx
+import pytz
 import requests
 
 
@@ -15,7 +16,8 @@ from django.forms import modelformset_factory
 from django.forms.models import inlineformset_factory, model_to_dict
 from django.shortcuts import get_object_or_404, render, redirect, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.core.mail import EmailMessage
+from django.core import serializers
+from django.core.mail import EmailMessage, send_mail
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -24,25 +26,36 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.template.context import RequestContext
 from django.template.defaulttags import register
+from django.template.loader import render_to_string
 from dateutil.relativedelta import *
 from django.views import generic
 
-from .forms import (AgentSearchForm, CancelForm, PolicyForm, PolicyVersionForm, InsuredForm, LodgementReportForm,
-                    LodgementDownloadForm, ReportForm, SearchForm, PayingAuthorityForm,GPWReportForm,AgentForm, BookForm)
-from .models import (Agent, Allocation, Book, Branch, Card, Dependant, Payment, PayingAuthority, Policy, PolicyVersion,
-                     Insured, Instalment, Scheme, SMS)
+
+from .forms import (AgentSearchForm, CancelForm, ClaimForm, PolicyForm, PolicyVersionForm, InsuredForm,
+                    LodgementReportForm, LodgementDownloadForm, ReportForm, SearchForm, PayingAuthorityForm,
+                    GPWReportForm,AgentForm, BookForm)
+from .models import (Agent, Allocation, Book, Branch, Card, Claim, ClaimEvent, Dependant, Payment, PayingAuthority,
+                     Policy, PolicyVersion, Insured, Instalment, Scheme, SMS)
 
 
 def calculate_premium(dependant):
     if dependant.dependant_dob < dependant.policy.proposal_date - relativedelta(years=17):
         if dependant.dependant_dob > dependant.policy.proposal_date - relativedelta(years=22) and dependant.still_in_school == True:
             monthly_premium = dependant.plan.plan_minor_premium
+            minor = True
         else:
             monthly_premium = dependant.plan.plan_adult_premium
+            minor = False
     else:
         monthly_premium = dependant.plan.plan_minor_premium
+        minor = True
+    return {
+        'monthly_premium': monthly_premium,
+        'minor': minor
+    }
 
-    return monthly_premium
+
+
 
 
 @register.filter
@@ -151,7 +164,7 @@ def create_policy(request):
             dependant_formset.save()
 
             for dependant in policy.dependant_set.all():
-                dependant.dependant_monthly_premium = calculate_premium(dependant)
+                dependant.dependant_monthly_premium = calculate_premium(dependant)['monthly_premium']
                 dependant.endorsement_version = 0
                 dependant.renewal_version = 0
 
@@ -314,7 +327,7 @@ def dependant_endorsement(request, pk):
                         )
                         policy.dependant_set.add(dependant, bulk=False)
 
-                        dependant.dependant_monthly_premium = calculate_premium(dependant)
+                        dependant.dependant_monthly_premium = calculate_premium(dependant)['monthly_premium']
                         dependant.save()
 
             version = PolicyVersion(
@@ -1523,13 +1536,14 @@ def download_policy_list(request):
 
 def send_sms(sms):
     settings = {
-        'sub_account': '2673_hcp',
+        'sub_account': '2673_hc',
         'sub_account_pass': 'rayjowa001',
         'action': 'send_sms',
     }
 
     parameters = {**settings, **sms}
-    parameters['recipients'] = '0773152085'
+    parameters['recipients'] = '0775333753'
+    #import pdb; pdb.set_trace()
     status = requests.get("http://cheapglobalsms.com/api_v1", params=parameters)
     error = ""
 
@@ -1636,8 +1650,201 @@ def allocate_premiums(policy):
                         debit.save()
 
 
+def claim_version(request):
+    if request.method == 'POST':
+        policy = Policy.objects.get(id=request.POST['policy_number'])
+        admitted_date = datetime.datetime.strptime(request.POST['admitted_date'], '%Y-%m-%d')
+
+        versions = policy.policyversion_set.order_by('-version_date')
+        timezone = pytz.timezone("Africa/Harare")
+        admitted_date = timezone.localize(admitted_date)
+
+        for version in versions:
+            if version.version_date > admitted_date:
+                pass
+            else:
+                effective_version = version
+                break
+
+        covered = policy.dependant_set.filter(renewal_version = effective_version.renewal_version,
+                                              endorsement_version=effective_version.endorsement_version)
+        dependants = []
+        for dependant in covered:
+            dep = {
+                'pk': dependant.id,
+                'name':dependant.dependant_name,
+                'id_number':dependant.dependant_id_number,
+                'dob':dependant.dependant_dob,
+                'plan_name':dependant.plan.plan_name,
+                'plan_id':dependant.plan.id
+            }
+            dependants.append(dep)
+
+        #import pdb; pdb.set_trace()
+        #return JsonResponse(serializers.serialize('json', dependants), safe = False)
+        return JsonResponse(dependants, safe=False)
+
+
+def calculate_hours(request):
+    admitted_date = datetime.datetime.strptime(request.POST['admitted_date'], '%Y-%m-%d')
+    discharged_date = datetime.datetime.strptime(request.POST['discharged_date'], '%Y-%m-%d')
+    admitted_time = datetime.datetime.strptime(request.POST['admitted_time'], '%H:%M').time()
+    discharged_time = datetime.datetime.strptime(request.POST['discharged_time'], '%H:%M').time()
+
+
+    admitted_date = datetime.datetime.combine(admitted_date, admitted_time)
+    discharged_date = datetime.datetime.combine(discharged_date, discharged_time)
+
+    delta =  discharged_date - admitted_date
+    days = delta.days
+
+    dependant = Dependant.objects.get(id=request.POST['dependant_id'])
+
+    if calculate_premium(dependant)['minor']:
+        claim_amount = days * dependant.plan.minor_payout
+    else:
+        claim_amount = days * dependant.plan.adult_payout
+
+    return JsonResponse(
+        {
+            'days':days,
+            'claim_amount':claim_amount
+        }
+    )
 
 
 
+def init_claim(request, pk):
+    policy = Policy.objects.get(id=pk)
+
+    if request.method == 'POST':
+        claim_form = ClaimForm(request.POST)
+
+        if claim_form.is_valid():
+
+            dependant = Dependant.objects.get(id=request.POST['claim_dependant'])
+
+            admitted_date = claim_form.cleaned_data['admitted_date']
+            discharged_date = claim_form.cleaned_data['discharged_date']
+            admitted_time = datetime.datetime.strptime(request.POST['admitted_time'], '%H:%M').time()
+            discharged_time = datetime.datetime.strptime(request.POST['discharged_time'], '%H:%M').time()
+
+            admitted_date = datetime.datetime.combine(admitted_date, admitted_time)
+            discharged_date = datetime.datetime.combine(discharged_date, discharged_time)
+
+            claim = Claim(
+                policy=policy,
+                dependant=dependant,
+                admitted_date=admitted_date,
+                discharged_date=discharged_date,
+                days=claim_form.cleaned_data['days'],
+                peril_type=claim_form.cleaned_data['peril_type'],
+                peril_detail=claim_form.cleaned_data['peril_detail'],
+                doctor_name=claim_form.cleaned_data['doctor_name'],
+                hospital_name=claim_form.cleaned_data['hospital_name'],
+                preexisting=claim_form.cleaned_data['preexisting'],
+                amount=claim_form.cleaned_data['amount'],
+                account_name=claim_form.cleaned_data['account_name'],
+                bank=claim_form.cleaned_data['bank'],
+                bank_branch=claim_form.cleaned_data['bank_branch'],
+                bank_branch_code=claim_form.cleaned_data['bank_branch_code'],
+                account_number=claim_form.cleaned_data['account_number'],
+                created_by=request.user.username,
+                status="open"
+            )
+            claim.save()
+
+            claim.claim_number = 'HCP/C/'+'0'*(6-len(str(claim.id)))+str(claim.id)
+            claim.save()
+
+            ClaimEvent(
+                claim = claim,
+                event_date = datetime.datetime.now(),
+                description = "{} intimated claim".format(request.user.username)
+            ).save()
+            return HttpResponseRedirect(reverse('system:view_claim', kwargs={'pk': claim.id}))
+
+    else:
+        claim_form = ClaimForm()
+
+    return render(request, 'system/init_claim.html',
+                  {'claim_form': claim_form,
+                   'policy': policy
+                   })
 
 
+def view_claim(request, pk):
+    claim = Claim.objects.get(id=pk)
+    users = User.objects.filter(groups__name='claim_approve')
+    approvers = []
+
+
+    for approver in users:
+        claims_count = Claim.objects.filter(approved_by=approver.username).exclude(status='Settled').count()
+        a = {}
+        a['approver'] = approver
+        a['que'] = claims_count
+        approvers.append(a)
+
+    return render(
+        request,
+        'system/view_claim.html',
+        {
+            'claim': claim,
+            'approvers':approvers
+        }
+    )
+
+def print_claim(request, pk):
+    claim = Claim.objects.get(id=pk)
+    return render(request, 'system/print_claim.html', {'claim': claim})
+
+def release(request, pk):
+    claim = Claim.objects.get(id=pk)
+    return render(request, 'system/release.html', {'claim': claim})
+
+def send_approval(request, user, claim):
+    user = User.objects.get(id=user)
+    claim = Claim.objects.get(id=claim)
+
+    ClaimEvent (
+        claim=claim,
+        event_date = datetime.datetime.now(),
+        description = "{} sent to {} for approval".format(request.user.username, user.username)
+
+    ).save()
+    claim.approved_by = user.username
+    claim.status = 'Awaiting approval'
+    claim.save()
+    username = user.first_name
+    claim_url = "{0}://{1}{2}".format(request.scheme, request.get_host(), '/system/view_claim/' + str(claim.id)+'/')
+    msg_plain = render_to_string('system/approve_claim_email.txt', {'username': username})
+    msg_html = render_to_string('system/approve_claim_email.html', {'username': username, 'claim':claim, 'claim_url':claim_url})
+
+    send_mail(
+        'New HCP Claim: {}'.format(claim.dependant.dependant_name),
+        msg_plain,
+        'some@sender.com',
+        [user.email],
+        html_message=msg_html,
+    )
+
+    return HttpResponseRedirect(reverse('system:view_claim', kwargs={'pk': claim.id}))
+
+
+@login_required
+def view_claims(request):
+    claims = Claim.objects.all()
+    return render(request, 'system/view_claims.html', {'claims': claims})
+
+def approve_claim(request, claim):
+    claim = Claim.objects.get(id=claim)
+    claim.status = 'Settled'
+    claim.approved_by = request.user.username
+    claim.save()
+    ClaimEvent(
+        claim=claim,
+        event_date = datetime.datetime.now(),
+        description = '{} approved claim'.format(request.user.username)
+    )
+    return HttpResponseRedirect(reverse('system:view_claim', kwargs={'pk': claim.id}))

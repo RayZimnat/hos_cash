@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/dosis.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/style_1.css' %}">
+</head>
+<body>
+    <div style="max-width: 400px; margin: auto; font-family: 'Arial'">
+        <div style="background-color:#3399ff; color: #fff; margin: 0; padding: 0.5px 10px">
+            <h1>Hospital Cash Plan</h1>
+        </div>
+        <div style="background-color:#F4F0E7; padding: 10px; margin: 0">
+            <p> Dear {{ username }}</p>
+            <p> You have a new claim awaiting your approval</p>
+
+            <a href="{{ claim_url }}" >
+                <input type="button" value="View Claim" class="button" style="
+            margin-left: 125px;
+            border-radius:4px;
+            border: solid #3399ff 2px;
+            color: #3399ff ;
+            padding: 8px;
+            font-family: 'Arial';
+            font-weight: 600;
+            font-size: 16px;
+            background-color: transparent;
+            width: 150px;
+            margin-bottom: 10px;
+            ">
+            </a>
+
+        </div>
+    </div>
+
+</body>
+</html>

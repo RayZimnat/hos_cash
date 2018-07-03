@@ -110,9 +110,12 @@ FILE_UPLOAD_HANDLERS = ('django_excel.ExcelMemoryFileUploadHandler',
 
 LOGIN_REDIRECT_URL = '/system/'
 
-EMAIL_HOST = '10.200.4.10'
+#EMAIL CONFIG
+#=============================================
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'jowar@zimnat.co.zw'
-
-EMAIL_HOST_PASSWORD = "Letmein123"
+EMAIL_PORT = 587
+EMAIL_HOST_PASSWORD = "KingMidas"
 

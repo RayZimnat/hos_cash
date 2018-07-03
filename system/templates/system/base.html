@@ -1,19 +1,24 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
 <head>
 
 
     <link rel="stylesheet" type="text/css" href="{% static 'system/dosis.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'system/style_1.css' %}">
     <link rel="stylesheet" href="{% static 'system/jquery-ui-1.11.4/jquery-ui.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'system/calendar/codebase/dhtmlxcalendar.css'%}">
     <link rel="stylesheet" type="text/css" href="{% static 'system/paging.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/opentip/opentip.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/style_1.css' %}">
     <script type="text/javascript" src="{% static 'system/jquery-1.11.3.js' %}"></script>
     <script src="{% static 'system/jquery-ui-1.11.4/jquery-ui.min.js' %}"></script>
     <script src="{% static 'system/script.js' %}"></script>
     <script src="{% static 'system/paging.js' %}"></script>
     <script src="{% static 'system/calendar/codebase/dhtmlxcalendar.js' %}"></script>
+    <script src="{% static 'system/opentip/opentip.js' %}"></script>
+
+
 
     <link rel="icon" type="image/png" href="{% static 'system/images/icon.png' %}">
 
@@ -21,6 +26,7 @@
 
     {% block js %}{% endblock %}
 </head>
+
 <body>
     <div id="container">
         <header>
@@ -40,6 +46,59 @@
         </header>
         <div id="body" class="body_flex_con">
             <div id="left">
+                  <aside class="sidebar">
+                  <div id="leftside-navigation" class="nano">
+                    <ul class="nano-content">
+                      <li>
+                        <a href="{% url "system:create_policy" %}"><i class="fa fa-dashboard"></i><span>Create new policy</span></a>
+                      </li>
+
+                      <li class="sub-menu">
+                        <a href="javascript:void(0);"><i class="fa fa-cogs"></i><span>Claims</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                          <li><a href="{% url 'system:view_claims' %}">View claims</a></li>
+                          <li><a href="#">Approve claims</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="sub-menu">
+                        <a href="javascript:void(0);"><i class="fa fa-table"></i><span>Agents</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                        <ul>
+                            <li><a href="{% url "system:add_agent" %}">Add agent</a></li>
+                            <li><a href="{% url "system:agents_list" %}">Agent list</a></li>
+                            <li><a href="{% url "system:comm_statements" %}">Commision statement</a></li>
+                            <li><a href="{% url "system:agent_statements" %}">Premium statement</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="sub-menu">
+                          <a href="javascript:void(0);"><i class="fa fa fa-tasks"></i><span>Reports</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                          <ul>
+                            <li><a href="{% url "system:gwp_report" %}">GWP report</a></li>
+                            <li><a href="{% url "system:lodgement" %}">Lodgement</a></li>
+                            <li><a href="{% url "system:cards" %}">Cards Printed</a></li>
+                          </ul>
+                      </li>
+
+                        <li class="sub-menu">
+                          <a href="javascript:void(0);"><i class="fa fa fa-tasks"></i><span>Admin</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                          <ul>
+                            <li><a href="{% url 'system:add_paying_authority' %}">Add paying authority</a></li>
+                          </ul>
+                        </li>
+
+                        <li class="sub-menu">
+                          <a href="javascript:void(0);"><i class="fa fa fa-tasks"></i><span>Accounts</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+                          <ul>
+                            <li><a href="{% url "system:receipts" %}">Receipts</a></li>
+                          </ul>
+                        </li>
+
+                    </ul>
+                  </div>
+                </aside>
+                <!--
+
                 <a href="{% url "system:index" %}">
                     <img id="zim" src="{% static 'system/images/logo.png' %}">
                 </a>
@@ -50,49 +109,15 @@
 
                 <div id="menu_wrapper">
                     <ul id="menu">
-                        <li class="menu-item dropdown">
-                            <a href="{% url "system:create_policy" %}" class="dropbtn">New Policy</a>
-                            <div class="dropdown-content">
-                            </div>
-                        </li>
 
-                        <li class="menu-item dropdown">
-                            <a href="" class="dropbtn">Agents</a>
-                            <div class="dropdown-content">
-                                <a href="{% url "system:add_agent" %}">Add agent</a>
-                                <a href="{% url "system:agents_list" %}">Agent list</a>
-                                <a href="{% url "system:comm_statements" %}">Commision statement</a>
-                                <a href="{% url "system:agent_statements" %}">Premium statement</a>
-                            </div>
-                        </li>
 
-                        <li class="menu-item dropdown">
-                            <a href="" class="dropbtn">Reports</a>
-                            <div class="dropdown-content">
-                                <a href="{% url "system:gwp_report" %}">GWP report</a>
-                                <a href="#">Sign on SMS</a>
-                                <a href="#">Premium reminder</a>
-                                <a href="{% url "system:lodgement" %}">Lodgement</a>
-                                <a href="{% url "system:cards" %}">Cards Printed</a>
-                            </div>
-                        </li>
 
-                        <li class="menu-item dropdown">
-                            <a href="" class="dropbtn">Admin</a>
-                            <div class="dropdown-content">
-                                <a href="{% url 'system:add_paying_authority' %}">Add paying authority</a>
-                            </div>
-                        </li>
 
-                        <li class="menu-item dropdown">
-                            <a href="" class="dropbtn">Accounts</a>
-                            <div class="dropdown-content">
-                                <a href="{% url "system:receipts" %}">Receipts</a>
-                            </div>
-                        </li>
+
+
                     </ul>
                 </div>
-
+-->
             </div>
 
             {% load humanize %}
@@ -105,9 +130,22 @@
 
     </div>
     <script type="text/javascript">
+
+        $("#leftside-navigation .sub-menu > a").click(function(e) {
+            $('.active').removeClass('active');
+            $(this).addClass('active');
+            $("#leftside-navigation ul ul").slideUp(), $(this).next().is(":visible") || $(this).next().slideDown(),
+            e.stopPropagation()
+        });
+
+
         $(document).ready( function () {
             $('.paginated').DataTable();
         } );
+
     </script>
+
+
+
 </body>
 </html>

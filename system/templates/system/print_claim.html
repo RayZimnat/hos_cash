@@ -1,0 +1,158 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/dosis.css' %}">
+    <script type="text/javascript" src="{% static 'system/jquery-1.11.3.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'system/print_claim.css' %}">
+    <title>HCP Card - {{ policy.insured.insured_name }} {{ policy.insured.insured_surname }}</title>
+</head>
+<body>
+
+    <div id="cheque_requisition" class="card_page">
+        <h3 id="chq_title" class="centre">CLAIM CHEQUE REQUISITION FORM</h3>
+        <div class="border">
+            <table>
+                <tr>
+                    <td class="cell_tab">Insured</td>
+                    <td>{{ claim.policy.insured.insured_name }} {{ claim.policy.insured.insured_surname }}</td>
+                </tr>
+                <tr>
+                    <td>Claim number</td>
+                    <td>{{ claim.claim_number }}</td>
+                </tr>
+
+                <tr>
+                    <td>Policy number</td>
+                    <td>{{ claim.policy.proposal_number }}</td>
+                </tr>
+
+                <tr>
+                    <td>Agent</td>
+                    <td>{{ claim.policy.agent.agent_name }}</td>
+                </tr>
+                <tr>
+                    <td>Date of loss</td>
+                    <td>{{ claim.admitted_date.date }}</td>
+                </tr>
+
+                <tr>
+                    <td>Circumstances</td>
+                    <td>{{ claim.dependant.dependant_name }} - Hospitalised - {{ claim.peril_detail }}</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div class="border">
+            <table>
+                <tr>
+                    <td class="cell_tab">Payee</td>
+                    <td>Claim payable account; {{ claim.account_name }}</td>
+                </tr>
+                <tr>
+                    <td>This Payment</td>
+                    <td>{{ claim.amount }}</td>
+                </tr>
+                <tr>
+                    <td>Paid to date</td>
+                    <td>{{ claim.amount }}</td>
+                </tr>
+                <tr>
+                    <td>Outstanding reserve</td>
+                    <td>0.00</td>
+                </tr>
+                <tr>
+                    <td>Requested by</td>
+                    <td>{{ user.get_full_name|default:user.username }}</td>
+                </tr>
+                <tr>
+                    <td>Date requested</td>
+                    <td>{% now "F d, Y" %}</td>
+                </tr>
+                <tr>
+                    <td>Document ref. no.</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Authorised by</td>
+                    <td></td>
+                    <td>Date Authorised</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="border" id="cheque">
+            <p>Cheque no. :    _____________________________________          Date printed : ____________________________________</p>
+        </div>
+
+        <h3 class="centre">ELECTRONIC PAYMENT DETAILS</h3>
+        <table class="table_border">
+            <tr>
+                <td class="cell_tab">Payee name</td>
+                <td>{{ claim.account_name }}</td>
+            </tr>
+            <tr>
+                <td>Bankers</td>
+                <td>{{ claim.bank }}</td>
+            </tr>
+            <tr>
+                <td>Account number</td>
+                <td>{{ claim.account_number }}</td>
+            </tr>
+            <tr>
+                <td>Bank branch</td>
+                <td>{{ claim.bank_branch }}</td>
+            </tr>
+            <tr>
+                <td>Branch code</td>
+                <td>{{ bank_branch_code }}</td>
+            </tr>
+        </table>
+
+        <table class="table_border">
+            <tr class="shadding">
+                <td>FACULTATIVE REINSURANCE</td>
+                <td class="centre">PROPORTION (%)</td>
+                <td class="centre">PROPORTION ($)</td>
+            </tr>
+            <tr>
+                <td class="reinsurance"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <table class="table_border">
+            <tr class="shadding">
+                <td>TREATY REINSURANCE</td>
+                <td class="centre">PROPORTION (%)</td>
+                <td class="centre">PROPORTION ($)</td>
+            </tr>
+            <tr>
+                <td class="reinsurance"></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <table class="sig">
+            <tr>
+                <td>Signatory 1: __________________________________</td>
+                <td class="right">Signatory 2: __________________________________</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.print();
+            document.location.href = '/system/view_claim/' + {{ claim.id }} + '/';
+        });
+    </script>
+
+</body>
+</html>

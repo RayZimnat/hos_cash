@@ -72,6 +72,7 @@ $(document).ready(function(){
     var payAuth = $("#pay_auth");
     var payMethod = document.getElementById("id_payment_method");
     var payAuthority = document.getElementById("id_paying_authority");
+    var today = new Date();
 
 
 	try {
@@ -80,8 +81,7 @@ $(document).ready(function(){
 
 	}
 
-
-    $("#id_paying_authority, #id_paying_authority_label").hide();
+	$("#id_paying_authority, #id_paying_authority_label").hide();
 
     $("#checkAll").change(function () {
         alert("Fu!");
@@ -102,6 +102,7 @@ $(document).ready(function(){
     });
 
 
+
     $('#id_agent_show').keypress(function(){
 
         q = $(this).val();
@@ -111,7 +112,7 @@ $(document).ready(function(){
         $('#agent_drpdwn').css('top', (pos.top)+35+ 'px').fadeIn();
         }).blur(function(){
         $('#agent_drpdwn').fadeOut();
-});
+		});
 
 
    		//add some elements with animate effect
@@ -125,6 +126,60 @@ $(document).ready(function(){
 			$(this).find('.ico').removeClass("animated fadeIn");
 			}
 		);
+
+		//noinspection JSJQueryEfficiency
+
+
+		$('#dependants_table').on('click', 'tr', function (e) {
+			var dep_id = $(this).attr('data-id');
+			$('#claim_dependant').val(dep_id);
+			$('.sel').removeClass('sel');
+			$(this).addClass('sel');
+
+			calculate_claim();
+
+			$('#claim_details').removeAttr('hidden');
+
+        });
+
+		function calculate_claim() {
+			$.ajax({
+				url:'/system/calculate_hours/',
+				method:'POST',
+				data: {
+					admitted_date:$('#id_admitted_date').val(),
+					admitted_time:$('#id_admitted_time').val(),
+					discharged_date:$('#id_discharged_date').val(),
+					discharged_time:$('#id_discharged_time').val(),
+					dependant_id:$('#claim_dependant').val(),
+					csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+				},
+				success:function (data) {
+					$('#id_days').val(data.days);
+					$('#id_amount').val(data.claim_amount);
+                }
+			});
+
+        };
+
+		$('#id_admitted_time, #id_admitted_date, #id_discharged_date, #id_discharged_time').on('blur', function (e) {
+			calculate_claim()
+        });
+
+
+       /*
+        myInput.change(function() {
+            if (myInput.val()) {
+              // Everything fine
+            inputOpentip.hide();
+            }
+            else {
+              // Oh oh
+                inputOpentip.setContent("Please fill out this field.");
+                inputOpentip.show();
+            }
+          });*/
+
 
 
 });

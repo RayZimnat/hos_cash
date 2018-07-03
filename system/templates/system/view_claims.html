@@ -1,0 +1,50 @@
+{% extends 'system/base.html' %}
+{% load filter_tags %}
+
+{% block title %}Claims{% endblock %}
+
+{% block centre %}
+	<h1 id="agent_head">Claims</h1>
+
+	<div class="div" id="policy_list">
+		<table id="agents" class="paginated tables">
+			<thead>
+                <tr id="agents_table_head" class="table_head pag">
+                    <th>Claim number</th>
+                    <th>Insured Name</th>
+                    <th>Dependant</th>
+                    <th>Claim amount</th>
+                    <th>Status</th>
+                    {% if request.user|has_group:'claim_approve' %}
+                    <th>Commision due</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for claim in claims%}
+                <tr>
+                    <td><a href="{% url 'system:view_claim' claim.id %}">{{ claim.claim_number }}</a></td>
+                    <td><a href="{% url 'system:view_claim' claim.id %}">{{ claim.policy.insured.insured_name }} {{ claim.policy.insured.insured_name }}</a></td>
+                    <td><a href="{% url 'system:view_claim' claim.id %}">{{ claim.dependant.dependant_name }}</a></td>
+                    <td><a href="{% url 'system:view_claim' claim.id %}">{{ claim.amount }}</a></td>
+                    <td>{{ claim.status }}</td>
+                    {% if request.user|has_group:'claim_approve' %}
+
+                    <td>
+                        {% if claim.status != 'Settled' %}
+                        <a href="{% url 'system:approve_claim' claim.id %}">
+                            <input id='print' type="button" value="Approve" class="button approve_btn">
+                        </a>
+                        {% endif %}
+                    </td>
+                    {% endif %}
+
+                {% endfor %}
+            </tbody>
+
+
+		</table>
+
+	</div>	
+
+{% endblock %}

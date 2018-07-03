@@ -1,11 +1,33 @@
 import datetime
 
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, RadioSelect
 from django.utils import timezone
 
-from .models import Agent, Book, Dependant, Insured, Policy, PolicyVersion, PayingAuthority
+from .models import Agent, Book, Claim, Dependant, Insured, Policy, PolicyVersion, PayingAuthority
 
+
+class ClaimForm(ModelForm):
+    class Meta:
+        model = Claim
+        exclude = [
+            'policy',
+            'created_by',
+            'approved_by',
+            'approved_date',
+            'dependant',
+            'status'
+        ]
+        labels = {
+            'days': 'Number of days',
+            'amount': 'Claim amount',
+            'peril_detail': 'Details',
+            'preexisting': 'Pre-existitng condition?',
+            'bank_branch': 'Branch',
+            }
+        widgets = {
+            'peril_type': RadioSelect()
+        }
 
 class DependantForm(ModelForm):
     class Meta:

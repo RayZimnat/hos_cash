@@ -8,3 +8,5 @@ pipInstalled Packages
 4.  pyexcel-xls
 5.  django-import-export
 6.  requests 2.18.4
+7.  pytz
+8.  num2words 0.5.6

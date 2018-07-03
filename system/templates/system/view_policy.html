@@ -180,8 +180,51 @@
             </div>
 
             <div id="Claims" class="tabcontent">
-                <p>Claims will go here</p>
+                 <table class="tables">
+                    <tr class="table_head">
+                        <th>Dependant</th>
+                        <th>Admitted </th>
+                        <th>Discharged </th>
+                        <th>Days</th>
+                        <th>Reason for admission</th>
+                        <th>Claim amount</th>
+                    </tr>
 
+                    {% for claim in policy.claim_set.all %}
+                        <tr>
+                            <td class="centre">
+                                <a href="{% url 'system:view_claim' claim.id %}">
+                                    {{ claim.dependant.dependant_name }}
+                                </a>
+                            </td>
+                            <td class="centre">
+                                <a href="{% url 'system:view_claim' claim.id %}">
+                                    {{ claim.admitted_date }}
+                                </a>
+                            </td>
+                            <td class="centre">
+                                <a href="{% url 'system:view_claim' claim.id %}">
+                                    {{ claim.discharged_date }}
+                                </a>
+                            </td>
+                            <td class="centre">
+                                <a href="{% url 'system:view_claim' claim.id %}">
+                                    {{ claim.days }}
+                                </a>
+                            </td>
+                            <td class="centre">
+                                <a href="{% url 'system:view_claim' claim.id %}">
+                                    {{ claim.peril_detail }}
+                                </a>
+                            </td>
+                            <td class="centre">
+                                <a href="{% url 'system:view_claim' claim.id %}">
+                                    {{ claim.amount}}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
 
             <div id="Cards" class="tabcontent">
@@ -243,6 +286,11 @@
         <a href="{% url 'system:print_card' policy.id %}">
             <input type="button" value="Print card" class="button">
         </a>
+
+        <a href="{% url 'system:init_claim' policy.id %}">
+            <input type="button" value="Process Claim" class="button">
+        </a>
+
 
     </div>
 

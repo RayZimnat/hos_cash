@@ -3,6 +3,7 @@
 ******************************************************************/
 html, body, #container {
     height: 100%;
+    min-width: 960px;
 }
 
 body {
@@ -17,9 +18,11 @@ body {
     display: flex;
     flex-flow: column;
 }
+
+
 /***************************HEADER********************************/
 #title {
-    background-color: #00B98D;
+    background-color: #3399ff;
     margin-top: 12px;
     border-style: solid;
     border-color: #E6E7E8;
@@ -67,21 +70,22 @@ body {
 
 #left {
     background-color: #383735;
-    flex: 10;
+    flex: 0 0 240px;
 }
 
 #centre {
     background-color: #F9F6F1;
-    flex: 37;
+    flex: 1;
     color: #6F6A66;
     overflow-y: auto;
 }
 
 #right {
     background-color: #F4F0E7;
-    flex: 9;
+    flex: 0 0 240px;
     color: #6F6A66;
 }
+
 
 #zim {
     width: 100%;
@@ -107,64 +111,70 @@ body {
     padding: 30px 0;
 }
 
-/********************* M  E  N  U ***********************/
-#menu_wrapper {
-    text-align: center;
+
+#dependants_table tbody tr:hover,
+#dependants_table tbody tr.sel {
+    color: #FFF;
+    background-color: #3399ff;
 }
 
-#menu, #menu li {
+.cause_p {
+    padding: 10px 0 0 10px;
+    margin-bottom: 0;
+    margin-top: 5px;
+    font-weight: 600;
+    color: #3399ff ;
+}
+
+
+#admitted_left,
+#discharged_left {
+    flex: 3;
+}
+
+#id_admitted_time,
+#id_discharged_time {
+    padding: 0 1px;
+    height: 28px;
+}
+#id_admitted_date,
+#id_discharged_date {
+    height: 28px;
+    vertical-align: middle;
+}
+
+#id_days,
+#id_amount {
+    margin: 10px 0;
+}
+#admitted_right label,
+#discharged_right label{
     margin: 0;
-    padding: 0;
+}
+
+#admitted_right,
+#discharged_right {
+    flex: 1;
+}
+
+#id_peril_type{
     list-style: none;
+    padding-top: 0;
+    padding-left: 10px;
+    margin: 0;
 }
 
-.menu-item {
-    width:100%;
-    cursor:pointer;
+#id_peril_type li {
+    padding: 1.5px 0;
 }
 
-#menu li:hover {
-    background-color:#00B98D;
-    color: #000;
-    position: relative;
+.days_amount {
+    margin-top: 10px;
 }
 
-#menu li a {
-    color: #E6E7E8;
-    display: inline-block;
-    text-decoration: none;
-    padding: 15px 35px;
+#amount input {
+    text-align: right;
 }
-
-.dropdown-content {
-    position: absolute;
-    display: none;
-}
-
-.menu-item:hover .dropdown-content {
-    left: 245px;
-    top: 0;
-    display: block;
-    position: absolute;
-}
-
-.dropdown-content a {
-    background-color: #00B98D ;
-    color: #6F6A66 ;
-}
-
-.menu-item:hover .dropdown-content a:hover {
-    background-color: #6F6A66;
-}
-
-.dropdown-content a {
-    display:inline-block;
-    width:150px;
-}
-
-
-/*****************************************************************************/
-
 
 .form_container {
     display: flex;
@@ -182,8 +192,16 @@ body {
     flex-direction: column;
 }
 
+.cause_o {
+    flex: 0 0 180px;
+}
+
+.detail_right {
+    flex: 5;
+}
+
 .field_flex_con:hover {
-    color: #00B98D;
+    color: #3399ff;
 }
 
 
@@ -191,6 +209,15 @@ body {
     display: flex;
     width: 100%;
     align-items: center;
+}
+
+#pre_right {
+    flex: 2;
+}
+
+#pre_right input {
+    width: auto;
+    box-shadow: none;
 }
 
 .field_left {
@@ -239,12 +266,14 @@ body {
     color: #6F6A66;
 }
 
+
+
 .tab li a:hover {
-    background-color: #00B98D;
+    background-color: #3399ff;
 }
 
 .tab li a:focus, .active {
-    background-color: #ccc;
+    background-color: #3399ff;
 }
 
 .tabcontent {
@@ -287,7 +316,7 @@ body {
 
 .table_head,
 .tables thead tr {
-    background-color: #00B98D;
+    background-color: #3399ff;
     color: #fff;
 }
 
@@ -311,23 +340,28 @@ body {
     font-size: 14px;
 }
 
+
+
+
 .centre {
     text-align: center;
 }
 
 .prem_title {
     font-size: 14px;
-    background-color: #00B98D ;
+    background-color: #3399ff ;
     color: #fff;
     margin: 0;
     text-align: center;
 }
 
-#policy_info .field_name {
+#policy_info .field_name,
+#claim_info .field_name {
     margin-bottom: 2px;
 }
 
-#policy_info .field_value {
+#policy_info .field_value,
+#claim_info .field_value {
     margin-top: 2px;
 }
 
@@ -337,6 +371,7 @@ body {
 }
 
 .narration input,
+.detail_right input,
 .field_right input,
 .field_right select,
 .field_right textarea {
@@ -360,9 +395,10 @@ body {
 }
 .field_right input:focus,
 .field_right select:focus,
-.field_right textarea:focus {
-    border: 1px solid #00B98D;
-    box-shadow: 1px 1px 4px #00B98D
+.field_right textarea:focus,
+.detail_right input:focus {
+    border: 1px solid #3399ff;
+    box-shadow: 1px 1px 4px #3399ff
 }
 
 .inputs .field_flex_con {
@@ -372,15 +408,18 @@ body {
 .inputs .field_flex_con input:hover,
 .inputs .field_flex_con select:hover,
 .inputs .field_flex_con textarea:hover {
-    border: 1px solid #00B98D;
-    color: #00B98D;
+    border: 1px solid #3399ff;
+    color: #3399ff;
 }
 
-#create_left {
+#create_left,
+.form_left {
     padding-right: 25px;
 }
 
-#policy_details {
+#policy_details,
+.days_amount,
+#hospital {
     display: flex;
     border-style: solid;
     border-width: 1px 0;
@@ -411,7 +450,7 @@ body {
 }
 
 #ben {
-    background-color:#00B98D ;
+    background-color:#3399ff ;
     padding: 0;
     margin: 0;
     color: #fff;
@@ -499,7 +538,7 @@ p.dep_field_con {
 }
 
 .button {
-    border: solid #00B98D 2px ;
+    border: solid #3399ff 2px ;
     border-radius: 4px;
     padding: 8px;
     font-family: Dosis;
@@ -507,14 +546,17 @@ p.dep_field_con {
     background-color: transparent;
     width: 150px;
     font-weight: 600;
-    color: #00B98D;
+    color: #3399ff;
     margin: 20px auto;
     text-decoration: none;
 }
 
+.approve_btn {
+    margin: 5px 2px;
+}
 
 .button:hover {
-    background-color: #00B98D;
+    background-color: #3399ff;
     color: #fff;
 }
 .button_con {
@@ -524,9 +566,10 @@ p.dep_field_con {
 
 .errorlist {
     list-style: none;
-    font-weight: 800;
+    font-weight: 600;
     color: #cd0a0a;
     margin: 0;
+    font-size: 13px;
 }
 
 .narration {
@@ -603,7 +646,7 @@ p.dep_field_con {
 
 .pol .pol_name {
     text-align: left;
-    color: #00B98D;
+    color: #3399ff;
 }
 
 .right_info {
@@ -624,7 +667,7 @@ p.dep_field_con {
 }
 
 .ben{
-    color: #00B98D ;
+    color: #3399ff ;
     text-decoration: underline;
 }
 
@@ -633,7 +676,7 @@ p.dep_field_con {
 }
 
 .message {
-    background-color: #00B98D;
+    background-color: #3399ff;
     color: #FFF;
     text-align: center;
 
@@ -652,7 +695,40 @@ p.dep_field_con {
     margin:0 0 25px 0;
 }
 
+.claim_history {
+    background-color: #cccccc;
+    padding: 10px 5px;
+    font-weight: 600;
 
+}
+
+.claim_history p {
+    margin: 0;
+}
+
+.claim_his {
+    background-color: #ffffff;
+}
+
+.hist {
+    padding:8px ;
+}
+
+.event_date {
+    margin-bottom: 0;
+    margin-top: 5px;
+    font-weight: 500;
+    color: #3399ff ;
+}
+
+.event {
+    margin: 2px 0;
+    font-size: 14px;
+}
+
+#approvers {
+    width: 230px;
+}
 /**********************************************************
                      L O G I N   F O R M
 ***********************************************************/
@@ -718,13 +794,13 @@ p.dep_field_con {
 
 #id_password:focus,
 #id_username:focus {
-    border-color:#00B98D ;
+    border-color:#3399ff ;
 }
 #login_table {
     width: 100%;
 }
 #login_button {
-    background-color: #00B98D;
+    background-color: #3399ff;
     color: #FFF;
 }
 
@@ -763,7 +839,7 @@ p.dep_field_con {
 }
 
 #agent_drpdwn div p:hover {
-    background-color: #00B98D;
+    background-color: #3399ff;
     color: #FFF;
 }
 
@@ -796,4 +872,90 @@ p.dep_field_con {
 #email_text {
     width: 100%;
     height: 4em;
+}
+
+div.fixed {
+    position: fixed;
+    bottom: 50px;
+    right: 5px;
+}
+
+div.fixed table {
+    width: auto;
+}
+
+/***********************************************************************************************************************
+                                        M    E    N    U         T    W    O
+********************************************************************************************************************* */
+.sidebar-toggle {
+  margin-left: -240px;
+}
+.sidebar {
+  width: 240px;
+  height: 100%;
+  /*background: #293949;*/
+  position: absolute;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  z-index: 100;
+}
+.sidebar #leftside-navigation ul,
+.sidebar #leftside-navigation ul ul {
+  margin: -2px 0 0;
+  padding: 0;
+}
+.sidebar #leftside-navigation ul li {
+  list-style-type: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.sidebar #leftside-navigation ul li.active > a {
+  color: #fff;
+}
+.sidebar #leftside-navigation ul li.active ul {
+  display: block;
+}
+.sidebar #leftside-navigation ul li a {
+  color: #E6E7E8;
+  text-decoration: none;
+  display: block;
+  padding: 18px 0 18px 25px;
+  /* font-size: 12px;*/
+  outline: 0;
+  -webkit-transition: all 200ms ease-in;
+  -moz-transition: all 200ms ease-in;
+  -o-transition: all 200ms ease-in;
+  -ms-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+}
+.sidebar #leftside-navigation ul li a:hover {
+  background-color: #3399ff;
+}
+.sidebar #leftside-navigation ul li a span {
+  display: inline-block;
+}
+.sidebar #leftside-navigation ul li a i {
+  width: 20px;
+}
+.sidebar #leftside-navigation ul li a i .fa-angle-left,
+.sidebar #leftside-navigation ul li a i .fa-angle-right {
+  padding-top: 3px;
+}
+.sidebar #leftside-navigation ul ul {
+  display: none;
+}
+.sidebar #leftside-navigation ul ul li {
+  background: #E6E7E8;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  border-bottom: none;
+}
+.sidebar #leftside-navigation ul ul li a {
+
+  padding-top: 13px;
+  padding-bottom: 13px;
+  color: #6F6A66
 }

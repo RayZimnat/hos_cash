@@ -1,0 +1,331 @@
+{% extends 'system/base.html' %}
+
+{% block title %}New claim | {{ policy.insured.insured_name }} {{ policy.insured.insured_surname }} {% endblock %}
+
+{% block centre %}
+    <div>
+        <h2 class="form_title">New Claim - {{ policy.insured.insured_name.lower | capfirst }} {{ policy.insured.insured_surname.lower | capfirst }}</h2>
+
+        {% if error_message %}<p>{{ error_message }}</p>{% endif %}
+
+        <form action="{% url 'system:init_claim' policy.id %}" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input type="hidden" id="policy_id" name="policy_id" value="{{ policy.id }}">
+
+            <div class="form_container">
+                <div class="form_left">
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Policy number</p>
+                        <p class="field_right field_value" id="policy_number">{{ policy.proposal_number }}</p>
+
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Insured</p>
+                        <p class="field_right field_value">{{ policy.insured.insured_surname }} {{ policy.insured.insured_name }}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Agent</p>
+                        <p class="field_right field_value">{{ policy.agent.agent_name }}</p>
+                    </div>
+
+                </div>
+                <div class="form_right">
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Proposal date</p>
+                        <p class="field_right field_value">{{ policy.proposal_date}}</p>
+                    </div>
+
+                    <div class="field_flex_con">
+                        <p class="field_left field_name">Inception date</p>
+                        <p id="pol_inception" class="field_right field_value">{{ policy.inception_date }}</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="narration">
+                <div id="create_left" class="form_left inputs" >
+
+                    <div id="date_admitted" class="field_flex_con">
+                        <div class="field_left field_name" id="admitted_left">
+                            {{ claim_form.admitted_date.label_tag }}
+                            {{ claim_form.admitted_date.errors }}
+                            {{ claim_form.admitted_date }}
+                        </div>
+                        <div class="field_right field_name" id="admitted_right">
+                            <label for="id_admitted_time" class="">Time</label>
+                            <input id="id_admitted_time" name="admitted_time" type="time">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form_right inputs">
+                    <div id="date_discherged" class="field_flex_con">
+                        <div class="field_left field_name" id="discharged_left">
+                            {{ claim_form.discharged_date.label_tag }}
+                            {{ claim_form.discharged_date.errors }}
+                            {{ claim_form.discharged_date }}
+                        </div>
+                        <div class="field_right field_name" id="discharged_right">
+                            <label for="id_discharged_time" class="field_name">Time</label>
+                            <input id="id_discharged_time" name="discharged_time" type="time">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dependants">
+                <h3 id="ben">Selected admitted dependant</h3>
+                <div class="dep_cont">
+                    <table id="dependants_table" class="tables">
+                        <thead>
+                            <tr class="table_head">
+                            <th>Full name</th>
+                            <th>ID number</th>
+                            <th>DOB</th>
+                            <th>Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dependants_body"></tbody>
+                    </table>
+
+                </div>
+            </div>
+            <input name="claim_dependant" id="claim_dependant" type="hidden">
+
+
+
+
+            <div id="claim_details" hidden>
+                <div class="form_container days_amount">
+                    <div class="form_left">
+                        <div class="field_flex_con" >
+                            <div class="field_left field_name">{{ claim_form.days.label_tag }}</div>
+                            <div class="field_right">
+                                {{ claim_form.days.errors }}
+                                {{ claim_form.days}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form_right">
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.amount.label_tag }}</div>
+                            <div class="field_right">
+                                {{ claim_form.amount.errors }}
+                                {{ claim_form.amount }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="cause_p" >Cause of loss</p>
+                <div id="cause" class="form_container">
+
+                    <div class="cause_o field_name">
+                        {{ claim_form.peril_type }}
+                    </div>
+                    <div class="form_right inputs">
+
+                        <div class="field_flex_con">
+                            <div class="field_flex_con">
+                                <div class="field_left field_name">{{ claim_form.preexisting.label_tag }}</div>
+                                <div class="field_right" id="pre_right">
+                                    {{ claim_form.preexisting.errors }}
+                                    {{ claim_form.preexisting }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field_flex_con">
+                            <div class="field_flex_con">
+                                <div class="field_left field_name">{{ claim_form.peril_detail.label_tag }}</div>
+                                <div class="detail_right">
+                                    {{ claim_form.peril_detail.errors }}
+                                    {{ claim_form.peril_detail }}
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="form_container" id="hospital">
+                    <div class="form_left inputs">
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.doctor_name.label_tag }}</div>
+                            <div class="field_right">
+                                {{ claim_form.doctor_name.errors }}
+                                {{ claim_form.doctor_name }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_right inputs">
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.hospital_name.label_tag }}</div>
+                            <div class="field_right">
+                                {{ claim_form.hospital_name.errors }}
+                                {{ claim_form.hospital_name }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <p class="cause_p" >Banking details</p>
+                <div class="form_container" >
+                    <div class="form_left inputs">
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.account_name.label_tag }} </div>
+                            <div class="field_right">
+                                {{ claim_form.account_name.errors }}
+                                {{ claim_form.account_name }}
+                            </div>
+                        </div>
+
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.bank.label_tag }} </div>
+                            <div class="field_right">
+                                {{ claim_form.bank.errors }}
+                                {{ claim_form.bank }}
+                            </div>
+                        </div>
+
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.bank_branch.label_tag }} </div>
+                            <div class="field_right">
+                                {{ claim_form.bank_branch.errors }}
+                                {{ claim_form.bank_branch }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form_right inputs">
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.bank_branch_code.label_tag }} </div>
+                            <div class="field_right">
+                                {{ claim_form.bank_branch_code.errors }}
+                                {{ claim_form.bank_branch_code }}
+                            </div>
+                        </div>
+
+                        <div class="field_flex_con">
+                            <div class="field_left field_name">{{ claim_form.account_number.label_tag }} </div>
+                            <div class="field_right">
+                                {{ claim_form.baccount_number.errors }}
+                                {{ claim_form.account_number }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="button_con">
+                <input type="submit" value="save" class="button">
+            </div>
+
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var myInput = $("#id_admitted_date");
+	        var disInput = $('#id_discharged_date');
+	        var today = new Date();
+            var inputOpentip = new Opentip(myInput, {
+                showOn: null,
+                style: 'alert',
+                target: '#id_admitted_date'
+            });
+
+            var disTip = new Opentip(disInput, {
+                showOn: null,
+                style: 'alert',
+                target: '#id_discharged_date'
+            });
+
+            // Hide the tooltip on focus so we don't bother the user while editing.
+            myInput.focus(function() { inputOpentip.hide(); });
+            disInput.focus(function () {
+                disTip.hide();
+            });
+            //show dependants on date of loss change
+            $('#id_admitted_date').blur(function () {
+                var admitted = new Date($('#id_admitted_date').val());
+
+                if (admitted > today) {
+                    inputOpentip.setContent("Admitted date cannot be later than today");
+                    inputOpentip.show();
+                } else {
+                    var inception = new Date($('#pol_inception').text());
+                    if (admitted < inception) {
+                        inputOpentip.setContent("Admitted date cannot be before policy inception date");
+                        inputOpentip.show();
+                    } else {
+                        fetch_dependants()
+                    }
+
+                }
+            });
+
+            $('#id_discharged_date').blur(function () {
+                var discharged = new Date($(this).val());
+
+                if (discharged > today){
+                    disTip.setContent("Discharge date cannot be later than today");
+                    disTip.show();
+                } else {
+                    var admitted = new Date($('#id_admitted_date').val());
+                    if (discharged < admitted) {
+                        disTip.setContent("Discharge date cannot be before admission date");
+                        disTip.show();
+                    }
+                }
+
+            });
+
+            function fetch_dependants () {
+			$.ajax({
+				url:'/system/claim_version/',
+				method:'POST',
+				data:{
+					admitted_date:$('#id_admitted_date').val(),
+					policy_number:$('input[name=policy_id]').val(),
+					csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+				},
+				success:function (data) {
+					//console.log(data);
+					//alert('response received')
+                    var dependants = '';
+                    $.each(data, function (key, value) {
+                        dependants += '<tr data-id="'+value.pk+'">';
+                        dependants += '<td>'+value.name+'</td>';
+                        dependants += '<td>'+value.id_number+'</td>';
+                        dependants += '<td>'+value.dob+'</td>';
+                        dependants += '<td>'+value.plan_name+'</td>';
+                        dependants += '</tr>';
+                    });
+                    $('#dependants_body').empty();
+                    $('#dependants_body').append(dependants);
+                }
+			})
+
+		}
+        });
+    </script>
+
+    <script>
+        var myCalendar = new dhtmlXCalendarObject([
+,
+            "id_admitted_date",
+            "id_discharged_date"
+
+        ]);
+    </script>
+
+{% endblock %}

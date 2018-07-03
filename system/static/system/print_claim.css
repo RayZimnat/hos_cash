@@ -1,0 +1,146 @@
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+}
+
+
+html {
+    background: #b2b2b2;
+}
+
+body {
+    height: 11.69in;
+    width: 8.27in;
+    padding: 1cm;
+    font-family: Arial;
+    font-size: 12px;
+    background-color: #FFF;
+
+}
+
+.border {
+    border: 1px solid black;
+    margin: 10px 30px;
+}
+
+.border td,
+.table_border td {
+    padding: 8px 1px;
+}
+
+.table_border td {
+    padding: 5px 3px;
+}
+.cell_tab {
+    width: 160px;
+}
+
+.table_border,
+.table_border tr,
+.table_border td {
+    border: 1px solid black;
+
+}
+
+.table_border {
+    border-collapse: collapse;
+    width:92%;
+    margin: 10px 30px;
+}
+
+.sig {
+    width: 92%;
+    margin: 50px 30px 10px 30px;
+}
+
+.right{
+    text-align: right;
+}
+
+.reinsurance {
+    height: 20px;
+    width: 400px;
+}
+
+#cheque{
+    margin-bottom: 50px ;
+}
+.shadding {
+    background-color: #CCC;
+}
+
+#chq_title {
+    font-size: 16px;
+}
+
+/**********************************************************************************************************************
+                                             R    E    L    E    A    S    E
+***********************************************************************************************************************/
+#release_head {
+    text-align: center;
+}
+
+#release_head p {
+    margin: 5px 0;
+}
+
+#zim_logo {
+    width: 350px;
+}
+
+#chq_title {
+    font-size: 18px;
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 0;
+}
+
+.centre {
+    text-align: center;
+}
+
+.gen_font {
+    font-size: 14px;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+#stats tr td {
+    height: 25px;
+}
+
+#stats_col {
+    width: 120px;
+}
+
+.para p {
+    line-height: 30px;
+}
+
+#wit {
+    height: 80px;
+}
+
+#sig {
+    height: 60px;
+}
+
+.dated {
+    margin: 50px 0;
+}
+
+.days {
+    width:250px;
+}
+
+#computation tr {
+    height: 20px;
+}
+
+#banking {
+    margin-bottom: 0;
+}

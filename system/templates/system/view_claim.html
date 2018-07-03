@@ -1,0 +1,234 @@
+{% extends 'system/base.html' %}
+{% load filter_tags %}
+
+{% block title %}Claim | {{ claim.policy.insured.insured_name }} {{ claim.policy.insured.insured_surname }} {% endblock %}
+
+{% block centre %}
+    <div>
+        <h2 class="form_title">Claim - {{ claim.policy.insured.insured_name.lower | capfirst }} {{ claim.policy.insured.insured_surname.lower | capfirst }}</h2>
+
+        <div class="form_container">
+            <div class="form_left">
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Policy number</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.policy.proposal_number }}</p>
+
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Insured</p>
+                    <p class="field_right field_value">{{ claim.policy.insured.insured_surname }} {{ claim.policy.insured.insured_name }}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Agent</p>
+                    <p class="field_right field_value">{{ claim.policy.agent.agent_name }}</p>
+                </div>
+
+            </div>
+            <div class="form_right">
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Proposal date</p>
+                    <p class="field_right field_value">{{ claim.policy.proposal_date}}</p>
+                </div>
+
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Inception date</p>
+                    <p class="field_right field_value">{{ claim.policy.inception_date }}</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="narration form_container days_amount">
+            <div id="create_left" class="form_left" >
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Admitted date</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.admitted_date }}
+                </div>
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Discharged date</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.discharged_date }}
+                </div>
+            </div>
+            <div id="create_left" class="form_right" >
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Number of days</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.days }}
+                </div>
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Claim amount</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.amount }}
+                </div>
+
+            </div>
+        </div>
+
+        <div id="dependants">
+            <h3 id="ben">Admitted dependant</h3>
+            <div class="dep_cont">
+                <table id="dependants_table" class="tables">
+                    <thead>
+                        <tr class="table_head">
+                        <th>Name</th>
+                        <th>ID number</th>
+                        <th>DOB</th>
+                        <th>Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ claim.dependant.dependant_name }}</td>
+                            <td class="centre">{{ claim.dependant.dependant_id_number }}</td>
+                            <td class="centre">{{ claim.dependant.dependant_dob }}</td>
+                            <td class="centre">{{ claim.dependant.plan.plan_name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="form_container days_amount">
+            <div class="form_left">
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Cause of loss</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.peril_detail }}
+                </div>
+
+            </div>
+            <div class="form_right">
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Admitting doctor</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.doctor_name }}
+                </div>
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Hospital</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.hospital_name}}
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <p class="cause_p" >Banking details</p>
+            <div class="form_left">
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Account name</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.account_name}}
+                </div>
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Bank</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.bank}}
+                </div>
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Branch</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.bank_branch}}
+                </div>
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Branch name </p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.bank_branch_code}}
+                </div>
+                <div class="field_flex_con">
+                    <p class="field_left field_name">Account number</p>
+                    <p class="field_right field_value" id="policy_number">{{ claim.account_number}}
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="button_con">
+        <a href="{% url 'system:print_claim' claim.id %}">
+            <input id='print' type="button" value="Payment requisition" class="button">
+        </a>
+
+        <a href="{% url 'system:release' claim.id %}">
+            <input id='print' type="button" value="Release" class="button">
+        </a>
+
+        {% if request.user|has_group:'claim_approve' %}
+            {% if claim.status != 'Settled' %}
+            <a href="{% url 'system:approve_claim' claim.id %}">
+                <input id='print' type="button" value="Approve claim" class="button">
+            </a>
+            {% endif %}
+        {% endif %}
+
+        </div>
+
+{% endblock %}
+
+{% block right %}
+    <div id="claim_info">
+        <p class="field_name centre">Claim number </p>
+        <p class="field_value centre">{{ claim.claim_number }}</p>
+
+        <p class="field_name centre">Claim status </p>
+        <p class="field_value centre">{{ claim.status }}</p>
+
+        <p class="field_name centre">Intimated by </p>
+        <p class="field_value centre">{{ claim.created_by }}</p>
+
+        <p class="field_name centre">Intimated date </p>
+        <p class="field_value centre">{{ claim.date_created }}</p>
+
+        <p class="field_name centre">Approved by </p>
+        <p class="field_value centre">{{ claim.approved_by }}</p>
+
+        <p class="field_name centre">Approved date </p>
+        <p class="field_value centre">{{ claim.approved_date }}</p>
+
+        <div class="claim_his">
+            <div class="claim_history">
+                <p>Claim history</p>
+            </div>
+            <div class="hist">
+                {% for event in claim.claimevent_set.all %}
+                    <p class="event_date">{{ event.event_date }}</p>
+                    <p class="event">{{ event.description }}</p>
+                {% endfor %}
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+    <div class="fixed">
+        <div class="claim_his">
+            <div class="claim_history">
+
+                    <p>Assign approver</p>
+
+            </div>
+        <table class="tables" id="approvers">
+            <tr class="table_head">
+                <th>Available approver</th>
+                <th>Que</th>
+            </tr>
+
+            {% for approver in approvers %}
+
+                <tr>
+                    <td>
+                        <a href="{% url 'system:send_approval' approver.approver.id claim.id %}">
+                            {{ approver.approver.first_name }} {{ approver.approver.last_name }}
+                        </a>
+                    </td>
+                    <td>{{ approver.que }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

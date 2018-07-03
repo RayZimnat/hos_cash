@@ -2,8 +2,8 @@ from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
-from .models import ( Agent, Allocation, Branch, Book, Card, Dependant, Insured, Instalment, Payment, Plan,
-					  Policy, PolicyVersion, PayingAuthority, Scheme, SMS )
+from .models import ( Agent, Allocation, Branch, Book, Card, Claim, ClaimEvent, Dependant,
+                      Insured, Instalment, Payment, Plan, Policy, PolicyVersion, PayingAuthority, Scheme, SMS )
 
 class AgentAdmin(admin.ModelAdmin):
 	search_fields = ['agent_name']
@@ -11,6 +11,12 @@ class AgentAdmin(admin.ModelAdmin):
 
 class CardAdmin(admin.ModelAdmin):
     pass
+
+
+class PolicyAdmin(admin.ModelAdmin):
+	inlines = [ClaimEvent]
+	list_display = ('claim_number', )
+
 
 class PaymentResource(resources.ModelResource):
 	
@@ -48,7 +54,7 @@ class PolicyAdmin(admin.ModelAdmin):
 	list_filter = ['date_created', ]
 	search_fields = ['proposal_number']
 
-
+admin.site.register(Claim)
 admin.site.register(Insured)
 admin.site.register(Card)
 admin.site.register(Agent, AgentAdmin)

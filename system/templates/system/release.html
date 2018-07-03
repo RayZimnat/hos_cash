@@ -1,0 +1,130 @@
+{% load staticfiles %}
+{% load humanize %}
+{% load filter_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/dosis.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'system/print_claim.css' %}">
+    <title>HCP Card - {{ policy.insured.insured_name }} {{ policy.insured.insured_surname }}</title>
+</head>
+<body>
+
+<div id="release_head">
+    <img id="zim_logo" src="{% static 'system/images/logo.png' %}">
+    <p>Zimnat General Insurance Company</p>
+    <p>Cnr 3rd Street and Nelson Mandela Avenue, Harare</p>
+    <p>P O Box CY1155 Causeway, Harare</p>
+    <p>Tel 707581 - 9</p>
+</div>
+
+    <div id="cheque_requisition" class="card_page">
+        <h3 id="chq_title" class="centre">AGREEMENT OF LOSS FORM</h3>
+        <h4 class="centre gen_font">Strinctly without prejudice</h4>
+
+        <div class="gen_font" >
+            <table id="stats">
+                <tr>
+                    <td id="stats_col"> Date</td>
+                    <td class="bold">{% now "F d, Y" %}</td>
+                </tr>
+                <tr>
+                    <td>Insured</td>
+                    <td class="bold">{{ claim.policy.insured.insured_name.title }} {{ claim.policy.insured.insured_surname.title }}</td>
+                </tr>
+
+                <tr>
+                    <td>Claim number</td>
+                    <td class="bold">{{ claim.claim_number }}</td>
+                </tr>
+                <tr>
+                    <td>Policy number</td>
+                    <td class="bold">{{ claim.policy.proposal_number }}</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div class="gen_font para">
+            <p>
+                I/We <strong> {{ claim.policy.insured.insured_name.title }} {{ claim.policy.insured.insured_surname.title }}</strong>,
+                hereby agree to accept the sum of <strong>USD {{ claim.amount|floatformat:2|intcomma }} ({{ claim.amount|to_words }} dollars only)</strong> in
+                full and final settlement of my/our claim in respect of <strong> {{ claim.dependant.dependant_name.title }}</strong>’s
+                hospitalization on {{ claim.admitted_date.date }} to {{ claim.discharged_date.date }}.
+            </p>
+
+            <p>
+                I/We acknowledge that I/we have not been induced to sign the discharge and that I/we will not be
+                entitled to cancellation of this statement on any grounds whatsoever.
+            </p>
+        </div>
+
+        <div class="gen_font">
+            <table>
+                <tr>
+                    <td id="sig">Name in full</td>
+                    <td>.............................................................................</td>
+                    <td>Signature</td>
+                    <td>.............................................................................</td>
+                </tr>
+                <tr>
+                    <td colspan="4" id="wit" class="bold">Witness</td>
+                </tr>
+                <tr>
+                    <td>Name in full</td>
+                    <td>.............................................................................</td>
+                    <td>Signature</td>
+                    <td>.............................................................................</td>
+                </tr>
+            </table>
+
+            <p class="dated">Dated at ..........................................................................
+                this..................day of .............................................year................</p>
+        </div>
+
+        <div class="gen_font">
+            <h4>Settlement computation</h4>
+            <table id="computation">
+                <tr>
+                    <td>Daily payout</td>
+                    <td>{{ claim.dependant.id|daily_payout }}</td>
+                </tr>
+                <tr>
+                    <td class="days">Number of days hospitalised</td>
+                    <td>{{ claim.days }}</td>
+                </tr>
+                <tr class="bold">
+                    <td>Net claim payable</td>
+                    <td>{{ claim.amount }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="gen_font">
+            <h4 id="banking">Banking Details</h4>
+            <table>
+                <tr>
+                    <td>Account name</td>
+                    <td>{{ claim.account_name.title }}</td>
+                </tr>
+                <tr>
+                    <td>Bank</td>
+                    <td>{{ claim.bank }}</td>
+                </tr>
+                <tr>
+                    <td>Branch</td>
+                    <td>{{ claim.bank_branch }}</td>
+                </tr>
+                <tr>
+                    <td>Account number</td>
+                    <td>{{ claim.account_number }}</td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

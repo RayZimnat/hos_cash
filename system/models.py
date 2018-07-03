@@ -101,6 +101,8 @@ class Plan(models.Model):
     plan_name = models.CharField(max_length=50)
     plan_adult_premium = models.DecimalField(max_digits=12, decimal_places=2)
     plan_minor_premium = models.DecimalField(max_digits=12, decimal_places=2)
+    adult_payout = models.DecimalField(max_digits=12, decimal_places=2)
+    minor_payout = models.DecimalField(max_digits=12, decimal_places=2)
     plan_cover_limit = models.DecimalField(max_digits=12, decimal_places=2)
     plan_date_modified = models.DateTimeField(auto_now=True)
     plan_modified_by = models.CharField(max_length=50)
@@ -361,6 +363,48 @@ class Dependant(models.Model):
     #		return self.plan.plan_adult_premium
     #	else:
     #		return self.plan.plan_minor_premium
+
+
+
+class Claim(models.Model):
+    claim_number = models.CharField(max_length=15, blank=True)
+    policy = models.ForeignKey(Policy)
+    dependant = models.ForeignKey(Dependant, null=True, blank=True)
+    admitted_date = models.DateTimeField()
+    discharged_date = models.DateTimeField()
+    days = models.IntegerField()
+    peril_type = models.CharField(default='Accident',
+                                      max_length=20,
+                                      choices=(
+                                          ('Accident', 'Accident'),
+                                          ('Illness', 'Illness'),
+                                          ('Pregnancy', 'Pregnancy'),
+                                          ('Other', 'Other condition')
+                                      ))
+    peril_detail = models.CharField(max_length = 100)
+    doctor_name = models.CharField(max_length = 50)
+    hospital_name = models.CharField(max_length=50)
+    preexisting = models.BooleanField(default=False)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    account_name = models.CharField(max_length=50)
+    bank = models.CharField(max_length=50)
+    bank_branch = models.CharField(max_length = 50, blank=True)
+    bank_branch_code = models.CharField(max_length=10, blank=True)
+    account_number = models.CharField(max_length=20)
+    date_created = models.DateTimeField(auto_now_add=True)
+    created_by = models.CharField(max_length=10)
+    approved_by = models.CharField(max_length=10, blank=True)
+    approved_date = models.DateTimeField(blank=True, null=True)
+    status = models.CharField(max_length=15)
+
+
+
+class ClaimEvent(models.Model):
+    claim = models.ForeignKey(Claim)
+    event_date = models.DateTimeField()
+    description = models.CharField(max_length=100)
+
+
 
 
 class Instalment(models.Model):
